@@ -34,7 +34,7 @@ class AuthController extends Controller
                     'company_id' => $addCompany->id,
                     'fiscal_year' => $request->fiscal_year,
                     'start_date' => $request->fiscal_start_date,
-                    'end_date' => $request->fiscla_end_date,
+                    'end_date' => $request->fiscal_end_date,
                 ]);
                 $addUser = Users::create([
                     'full_name' => $request->manager_name,
