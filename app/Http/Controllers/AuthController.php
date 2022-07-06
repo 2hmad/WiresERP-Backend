@@ -48,7 +48,7 @@ class AuthController extends Controller
                     'status' => 'active',
                     'image' => 'user_placeholder.png'
                 ]);
-                return $addUser->token;
+                return response()->json(['token' => $addUser->token], 200);
             } else {
                 return response()->json(['alert' => 'User already exists'], 404);
             }
