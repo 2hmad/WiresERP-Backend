@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $checkCompany = Companies::where('company_name', $request->company_name)->first();
+        $checkCompany = Companies::where('name', $request->company_name)->first();
         if ($checkCompany == null) {
             $checkUser = Users::where('email', $request->email)->first();
             if ($checkUser == null) {
