@@ -56,4 +56,17 @@ class AuthController extends Controller
             return response()->json(['alert' => 'Company already exists'], 404);
         }
     }
+    public function login(Request $request)
+    {
+        $user = Users::where('email', $request->email)->first();
+        if ($user == null) {
+            return response()->json(['alert' => 'User not found'], 404);
+        } else {
+            if (Hash::check($request->password, $user->password)) {
+                return response()->json(['token' => $user->token], 200);
+            } else {
+                return response()->json(['alert' => 'Password is incorrect'], 404);
+            }
+        }
+    }
 }
