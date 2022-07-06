@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('branch_id')->nullable();
             $table->text('status');
+            $table->text('image')->nullable();
         });
     }
 

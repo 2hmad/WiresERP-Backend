@@ -22,7 +22,7 @@ class AuthController extends Controller
                     'phone' => $request->company_phone,
                     'country' => $request->company_country,
                     'currency' => $request->company_currency,
-                    'logo' => "default.jpg",
+                    'logo' => "company_placeholder.png",
                     'status' => "active",
                 ]);
                 $createBranch = Branches::create([
@@ -36,7 +36,7 @@ class AuthController extends Controller
                     'start_date' => $request->fiscal_start_date,
                     'end_date' => $request->fiscla_end_date,
                 ]);
-                Users::create([
+                $addUser = Users::create([
                     'full_name' => $request->manager_name,
                     'email' => $request->manager_email,
                     'phone' => $request->manager_phone,
@@ -45,8 +45,10 @@ class AuthController extends Controller
                     'token' => md5(time()),
                     'company_id' => $addCompany->id,
                     'branch_id' => $createBranch->id,
-                    'status' => 'active'
+                    'status' => 'active',
+                    'image' => 'user_placeholder.png'
                 ]);
+                return $addUser->token;
             } else {
                 return response()->json(['alert' => 'User already exists'], 404);
             }

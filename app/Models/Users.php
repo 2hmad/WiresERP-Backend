@@ -18,6 +18,7 @@ class Users extends Model
         'company_id',
         'branch_id',
         'status',
+        'image',
     ];
     protected $hidden = [
         'password'
