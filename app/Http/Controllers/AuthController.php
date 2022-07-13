@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         $checkCompany = Companies::where('name', $request->company_name)->first();
         if ($checkCompany == null) {
-            $checkUser = Users::where('email', $request->email)->first();
+            $checkUser = Users::where('email', $request->manager_email)->first();
             if ($checkUser == null) {
                 $addCompany = Companies::create([
                     'name' => $request->company_name,
@@ -48,7 +48,7 @@ class AuthController extends Controller
                     'status' => 'active',
                     'image' => 'user_placeholder.png'
                 ]);
-                return response()->json(['token' => $addUser->token], 200);
+                return $addUser;
             } else {
                 return response()->json(['alert' => 'User already exists'], 404);
             }
@@ -63,7 +63,7 @@ class AuthController extends Controller
             return response()->json(['alert' => 'User not found'], 404);
         } else {
             if (Hash::check($request->password, $user->password)) {
-                return response()->json(['token' => $user->token], 200);
+                return $user;
             } else {
                 return response()->json(['alert' => 'Password is incorrect'], 404);
             }
