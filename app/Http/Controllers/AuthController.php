@@ -50,10 +50,10 @@ class AuthController extends Controller
                 ]);
                 return $addUser;
             } else {
-                return response()->json(['alert' => 'User already exists'], 404);
+                return response()->json(['alert_en' => 'User already exists', 'alert_ar' => 'المستخدم موجود بالفعل'], 404);
             }
         } else {
-            return response()->json(['alert' => 'Company already exists'], 404);
+            return response()->json(['alert_en' => 'Company already exists', 'alert_ar' => 'الشركة موجودة بالفعل'], 404);
         }
     }
     public function login(Request $request)
@@ -65,7 +65,7 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 return $user;
             } else {
-                return response()->json(['alert' => 'Password is incorrect'], 404);
+                return response()->json(['alert_en' => 'Password is incorrect', 'alert_ar' => 'كلمة المرور غير صحيحة'], 404);
             }
         }
     }
