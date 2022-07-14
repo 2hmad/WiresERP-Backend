@@ -42,7 +42,7 @@ class AuthController extends Controller
                     'phone' => $request->manager_phone,
                     'password' => Hash::make($request->manager_password),
                     'role' => 'manager',
-                    'token' => md5(time()),
+                    'token' => 'Bearer ' . md5(time()),
                     'company_id' => $addCompany->id,
                     'branch_id' => $createBranch->id,
                     'status' => 'active',
