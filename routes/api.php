@@ -24,6 +24,8 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'uToken'], function () {
-    Route::post('add-branch', [BranchesController::class, 'addBranch']);
     Route::post('branches', [BranchesController::class, 'branches']);
+    Route::post('add-branch', [BranchesController::class, 'addBranch']);
+    Route::post('edit-branch', [BranchesController::class, 'editBranch']);
+    Route::post('delete-branch', [BranchesController::class, 'deleteBranch']);
 });
