@@ -60,7 +60,7 @@ class AuthController extends Controller
     {
         $user = Users::where('email', $request->email)->first();
         if ($user == null) {
-            return response()->json(['alert' => 'User not found'], 404);
+            return response()->json(['alert_en' => 'User not found', 'alert_ar' => 'المستخدم غير موجود'], 404);
         } else {
             if (Hash::check($request->password, $user->password)) {
                 return $user;
