@@ -18,12 +18,12 @@ class UserToken
     public function handle(Request $request, Closure $next)
     {
         if ($request->header('Authorization') === null) {
-            return response()->json(['alert_en' => 'Authorization is required', 'alert_ar' => 'سجل دخولك اولاً'], 400);
+            return response()->json(['alert_en' => 'Unauthorized', 'alert_ar' => 'غير مصرح'], 401);
         } else {
             $token = $request->header('Authorization');
             $user = Users::where('token', $token)->first();
             if ($user === null) {
-                return response()->json(['alert_en' => 'User not found', 'alert_ar' => 'المستخدم غير موجود'], 400);
+                return response()->json(['alert_en' => 'Unauthorized', 'alert_ar' => 'غير مصرح'], 401);
             } else {
                 return $next($request);
             }
