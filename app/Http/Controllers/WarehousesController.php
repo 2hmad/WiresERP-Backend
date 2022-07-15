@@ -84,9 +84,16 @@ class WarehousesController extends Controller
     public function warehouseInventory(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        Warehouses::where([
-            ['company_id', $user->company_id],
-            ['id', $request->warehouse_id],
-        ])->delete();
+        if ($request->from !== null) {
+            return Products::where([
+                ['company_id', $user->company_id],
+                ['warehouse_id', $request->warehouse_id],
+            ])->whereBetween('created_at', [$request->from, $request->to])->get();
+        } else {
+            return Products::where([
+                ['company_id', $user->company_id],
+                ['warehouse_id', $request->warehouse_id],
+            ])->get();
+        }
     }
 }
