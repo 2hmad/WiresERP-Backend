@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchesController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WarehousesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('add-warehouse', [WarehousesController::class, 'addWarehouse']);
     Route::post('edit-warehouse', [WarehousesController::class, 'editWarehouse']);
     Route::post('delete-warehouse', [WarehousesController::class, 'deleteWarehouse']);
+    Route::post('transfer-warehouses', [WarehousesController::class, 'transferWarehouses']);
+
+    Route::post('products', [ProductsController::class, 'products']);
 });
