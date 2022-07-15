@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text('sub_category');
             $table->text('description')->nullable();
             $table->text('image')->nullable();
+            $table->timestamps();
         });
     }
 
