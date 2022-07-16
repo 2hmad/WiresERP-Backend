@@ -66,7 +66,7 @@ class ProductsController extends Controller
                     'category' => $dataDecode['category'],
                     'sub_category' => $dataDecode['sub_category'],
                     'description' => $dataDecode['description'],
-                    'image' => "product-placeholder.png",
+                    'image' => null,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);

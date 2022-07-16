@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedInteger('company_id');
             $table->text('client_name');
             $table->unsignedInteger('releated_user')->nullable();
-            $table->text('releated_user');
         });
     }
 
