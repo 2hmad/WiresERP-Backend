@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BanksController;
 use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ClientsController;
@@ -53,9 +54,18 @@ Route::group(['middleware' => 'uToken'], function () {
 
     Route::post('products', [ProductsController::class, 'products']);
     Route::post('add-product', [ProductsController::class, 'addProduct']);
+    Route::post('edit-product', [ProductsController::class, 'editProduct']);
+    Route::post('delete-product', [ProductsController::class, 'deleteProduct']);
 
     Route::post('clients', [DebtsController::class, 'clients']);
     Route::post('add-client', [DebtsController::class, 'addClient']);
+    Route::post('edit-client', [DebtsController::class, 'editClient']);
+    Route::post('delete-client', [DebtsController::class, 'deleteClient']);
     Route::post('suppliers', [DebtsController::class, 'suppliers']);
     Route::post('add-supplier', [DebtsController::class, 'addSupplier']);
+    Route::post('edit-supplier', [DebtsController::class, 'editSupplier']);
+    Route::post('delete-supplier', [DebtsController::class, 'deleteSupplier']);
+
+
+    Route::post('add-safe', [BanksController::class, 'addSafe']);
 });
