@@ -51,4 +51,6 @@ Route::group(['middleware' => 'uToken'], function () {
 
     Route::post('products', [ProductsController::class, 'products']);
     Route::post('add-product', [ProductsController::class, 'addProduct']);
+
+    Route::post('add-client', [ProductsController::class, 'addProduct']);
 });

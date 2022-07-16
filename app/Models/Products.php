@@ -11,5 +11,5 @@ class Products extends Model
     protected $fillable = [
         'company_id', 'warehouse_id', 'barcode', 'warehouse_balance', 'total_price', 'product_name', 'product_unit', 'wholesale_price', 'piece_price', 'min_stock', 'product_model', 'category', 'sub_category', 'description', 'image', 'created_at', 'updated_at'
     ];
-    protected $hidden = [];
+    protected $hidden = ['created_at', 'updated_at'];
 }
