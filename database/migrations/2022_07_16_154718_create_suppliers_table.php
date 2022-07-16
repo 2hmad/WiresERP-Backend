@@ -13,21 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('company_id');
-            $table->text('c_name');
-            $table->unsignedInteger('releated_user')->nullable();
+            $table->text('s_name');
             $table->text('indebt_type');
             $table->unsignedInteger('indebt_amount');
-            $table->text('c_phone')->nullable();
-            $table->text('c_address')->nullable();
-            $table->text('c_notes')->nullable();
+            $table->text('s_phone')->nullable();
+            $table->text('s_address')->nullable();
+            $table->text('s_notes')->nullable();
             $table->text('deal_type')->nullable();
-            $table->text('c_email')->nullable();
-            $table->text('c_company')->nullable();
-            $table->text('c_nationality')->nullable();
-            $table->text('c_tax_number')->nullable();
+            $table->text('s_email')->nullable();
+            $table->text('s_company')->nullable();
+            $table->text('s_nationality')->nullable();
+            $table->text('s_tax_number')->nullable();
             $table->timestamps();
         });
     }
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('suppliers');
     }
 };

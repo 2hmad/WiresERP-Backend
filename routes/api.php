@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\DebtsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WarehousesController;
 use Illuminate\Http\Request;
@@ -52,5 +54,8 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('products', [ProductsController::class, 'products']);
     Route::post('add-product', [ProductsController::class, 'addProduct']);
 
-    Route::post('add-client', [ProductsController::class, 'addProduct']);
+    Route::post('clients', [DebtsController::class, 'clients']);
+    Route::post('add-client', [DebtsController::class, 'addClient']);
+    Route::post('suppliers', [DebtsController::class, 'suppliers']);
+    Route::post('add-supplier', [DebtsController::class, 'addSupplier']);
 });
