@@ -16,10 +16,9 @@ class ProductsController extends Controller
     public function addProduct(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        $dataDecode = json_decode($request->data, true);
         $check = Products::where([
             ['company_id', $user->company_id],
-            ['product_name', $dataDecode['product_name']]
+            ['product_name', $request->product_name]
         ])->first();
         if ($check == null) {
             if ($request->hasFile('image')) {
@@ -28,23 +27,23 @@ class ProductsController extends Controller
                 ]);
                 if ($validated) {
                     $image = $request->file('image');
-                    $imageName = $dataDecode['product_name'] . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('products/company-' . $user->company_id), $imageName);
+                    $imageName = $request->product_name . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('storage/products/company-' . $user->company_id), $imageName);
                     Products::create([
                         'company_id' => $user->company_id,
-                        'warehouse_id' => $dataDecode['warehouse_id'],
-                        'barcode' => $dataDecode['barcode'],
-                        'warehouse_balance' => $dataDecode['warehouse_balance'],
-                        'total_price' => $dataDecode['total_price'],
-                        'product_name' => $dataDecode['product_name'],
-                        'product_unit' => $dataDecode['product_unit'],
-                        'wholesale_price' => $dataDecode['wholesale_price'],
-                        'piece_price' => $dataDecode['piece_price'],
-                        'min_stock' => $dataDecode['min_stock'],
-                        'product_model' => $dataDecode['product_model'],
-                        'category' => $dataDecode['category'],
-                        'sub_category' => $dataDecode['sub_category'],
-                        'description' => $dataDecode['description'],
+                        'warehouse_id' => $request->warehouse_id,
+                        'barcode' => $request->barcode,
+                        'warehouse_balance' => $request->warehouse_balance,
+                        'total_price' => $request->total_price,
+                        'product_name' => $request->product_name,
+                        'product_unit' => $request->product_unit,
+                        'wholesale_price' => $request->wholesale_price,
+                        'piece_price' => $request->piece_price,
+                        'min_stock' => $request->min_stock,
+                        'product_model' => $request->product_model,
+                        'category' => $request->category,
+                        'sub_category' => $request->sub_category,
+                        'description' => $request->description,
                         'image' => $imageName,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
@@ -53,19 +52,19 @@ class ProductsController extends Controller
             } else {
                 Products::create([
                     'company_id' => $user->company_id,
-                    'warehouse_id' => $dataDecode['warehouse_id'],
-                    'barcode' => $dataDecode['barcode'],
-                    'warehouse_balance' => $dataDecode['warehouse_balance'],
-                    'total_price' => $dataDecode['total_price'],
-                    'product_name' => $dataDecode['product_name'],
-                    'product_unit' => $dataDecode['product_unit'],
-                    'wholesale_price' => $dataDecode['wholesale_price'],
-                    'piece_price' => $dataDecode['piece_price'],
-                    'min_stock' => $dataDecode['min_stock'],
-                    'product_model' => $dataDecode['product_model'],
-                    'category' => $dataDecode['category'],
-                    'sub_category' => $dataDecode['sub_category'],
-                    'description' => $dataDecode['description'],
+                    'warehouse_id' => $request->warehouse_id,
+                    'barcode' => $request->barcode,
+                    'warehouse_balance' => $request->warehouse_balance,
+                    'total_price' => $request->total_price,
+                    'product_name' => $request->product_name,
+                    'product_unit' => $request->product_unit,
+                    'wholesale_price' => $request->wholesale_price,
+                    'piece_price' => $request->piece_price,
+                    'min_stock' => $request->min_stock,
+                    'product_model' => $request->product_model,
+                    'category' => $request->category,
+                    'sub_category' => $request->sub_category,
+                    'description' => $request->description,
                     'image' => null,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
