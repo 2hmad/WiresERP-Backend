@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('warehouse_id');
-            $table->text('barcode');
+            $table->unsignedBigInteger('barcode');
             $table->unsignedInteger('warehouse_balance');
             $table->unsignedInteger('total_price');
             $table->text('product_name');
