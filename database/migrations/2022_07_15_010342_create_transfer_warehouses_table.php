@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('transfer_warehouses', function (Blueprint $table) {
             $table->id();
-            $table->text('company_id');
+            $table->unsignedInteger('company_id');
             $table->text('from');
             $table->text('to');
             $table->unsignedInteger('product_id');

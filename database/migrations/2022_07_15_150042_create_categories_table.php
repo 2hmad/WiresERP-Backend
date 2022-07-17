@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->text('company_id');
+            $table->unsignedInteger('company_id');
             $table->text('category_name');
             $table->text('type');
         });
