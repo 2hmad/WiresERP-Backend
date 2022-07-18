@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Models\TransferWarehouses;
 use App\Models\Users;
 use Illuminate\Http\Request;
 
@@ -111,6 +112,7 @@ class ProductsController extends Controller
         ])->first();
         if ($check !== null) {
             Products::where('id', $request->product_id)->delete();
+            TransferWarehouses::where('product_id', $request->product_id)->delete();
         } else {
             return response()->json(['alert_en' => 'Product not found', 'alert_ar' => 'المنتج غير موجود'], 404);
         }

@@ -42,6 +42,9 @@ class CategoriesController extends Controller
             DB::table('categories')->where([
                 ['company_id', '=', $user->company_id], ['id', '=', $request->cat_id]
             ])->delete();
+            DB::table('sub_categories')->where([
+                ['company_id', '=', $user->company_id], ['category_id', '=', $request->cat_id]
+            ])->delete();
         } else {
             return response()->json(['alert_en' => 'Category not found', 'alert_ar' => 'الفئة غير موجودة'], 404);
         }
