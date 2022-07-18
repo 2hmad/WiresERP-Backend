@@ -47,54 +47,102 @@ class WarehousesController extends Controller
     public function transferWarehouses(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        $product = Products::where('id', $request->product_id)->first();
-        if ($product->warehouse_balance >= $request->quantity) {
-            TransferWarehouses::create([
-                'company_id' => $user->company_id,
-                'from' => $request->from_warehouse,
-                'to' => $request->to_warehouse,
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-                'date' => $request->date,
-                'notes' => $request->notes,
-            ]);
-            Products::where('id', $request->product_id)->update([
-                'warehouse_balance' => $product->warehouse_balance - $request->quantity
-            ]);
-            Products::create([
-                'company_id' => $user->company_id,
-                'warehouse_id' => $request->to_warehouse,
-                'barcode' => $product->barcode,
-                'warehouse_balance' => $request->quantity,
-                'total_price' => $product->total_price,
-                'product_name' => $product->product_name,
-                'product_unit' => $product->product_unit,
-                'wholesale_price' => $product->wholesale_price,
-                'piece_price' => $product->piece_price,
-                'min_stock' => $product->min_stock,
-                'product_model' => $product->product_model,
-                'category' => $product->category,
-                'sub_category' => $product->sub_category,
-                'description' => $product->description,
-                'image' => $product->image,
-            ]);
+        $product = Products::where([
+            ['id', $request->product_id],
+            ['company_id', $user->company_id],
+            ['warehouse_id', $request->from_warehouse],
+        ])->first();
+        if ($product !== null) {
+            if ($product->warehouse_balance >= $request->quantity) {
+                $checkTransfer = TransferWarehouses::where([
+                    ['company_id', $user->company_id],
+                    ['product_id', $request->product_id],
+                    ['from_warehouse', $request->from_warehouse],
+                    ['to_warehouse', $request->to_warehouse],
+                ])->first();
+                if ($checkTransfer == null) {
+                    TransferWarehouses::create([
+                        'company_id' => $user->company_id,
+                        'from_warehouse' => $request->from_warehouse,
+                        'to_warehouse' => $request->to_warehouse,
+                        'product_id' => $request->product_id,
+                        'quantity' => $request->quantity,
+                        'date' => $request->date,
+                        'notes' => $request->notes,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                } else {
+                    $checkTransfer->quantity += $request->quantity;
+                    $checkTransfer->save();
+                }
+                $checkProduct = Products::where([
+                    ['company_id', $user->company_id],
+                    ['warehouse_id', $request->to_warehouse],
+                ])->first();
+                if ($checkProduct == null) {
+                    Products::create([
+                        'company_id' => $user->company_id,
+                        'warehouse_id' => $request->to_warehouse,
+                        'barcode' => $product->barcode,
+                        'warehouse_balance' => $request->quantity,
+                        'total_price' => $product->total_price,
+                        'product_name' => $product->product_name,
+                        'product_unit' => $product->product_unit,
+                        'wholesale_price' => $product->wholesale_price,
+                        'piece_price' => $product->piece_price,
+                        'min_stock' => $product->min_stock,
+                        'product_model' => $product->product_model,
+                        'category' => $product->category,
+                        'sub_category' => $product->sub_category,
+                        'description' => $product->description,
+                        'image' => $product->image,
+                    ]);
+                } else {
+                    Products::where('id', $checkProduct->id)->update([
+                        'warehouse_balance' => $checkProduct->warehouse_balance + $request->quantity
+                    ]);
+                }
+                $getOld = Products::where([
+                    ['company_id', $user->company_id],
+                    ['warehouse_id', $request->from_warehouse],
+                ])->first();
+                if ($getOld->warehouse_balance > $request->quantity) {
+                    $getOld->warehouse_balance -= $request->quantity;
+                    $getOld->save();
+                }
+            } else {
+                return response()->json(['alert_en' => 'Warehouse balance is not enough', 'alert_ar' => 'رصيد المخزن غير كافي'], 404);
+            }
         } else {
-            return response()->json(['alert_en' => 'Warehouse balance is not enough', 'alert_ar' => 'رصيد المخزن غير كافي'], 404);
+            return response()->json(['alert_en' => 'Product is not found', 'alert_ar' => 'المنتج غير موجود في المخزن'], 404);
         }
     }
     public function warehouseInventory(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($request->from_date !== null) {
-            return TransferWarehouses::where([
-                ['company_id', $user->company_id],
-                ['to_warehouse', $request->warehouse_id],
-            ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            if ($request->warehouse_id !== null) {
+                return TransferWarehouses::where([
+                    ['company_id', $user->company_id],
+                    ['to_warehouse', $request->warehouse_id],
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            } else {
+                return TransferWarehouses::where([
+                    ['company_id', $user->company_id]
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            }
         } else {
-            return TransferWarehouses::where([
-                ['company_id', $user->company_id],
-                ['to_warehouse', $request->warehouse_id],
-            ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            if ($request->warehouse_id !== null) {
+                return TransferWarehouses::where([
+                    ['company_id', $user->company_id],
+                    ['to_warehouse', $request->warehouse_id],
+                ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            } else {
+                return TransferWarehouses::where([
+                    ['company_id', $user->company_id]
+                ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+            }
         }
     }
 }
