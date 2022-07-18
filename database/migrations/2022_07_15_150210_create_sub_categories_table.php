@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('company_id');
-            $table->text('category_id');
+            $table->unsignedInteger('category_id');
             $table->text('sub_category_name');
         });
     }

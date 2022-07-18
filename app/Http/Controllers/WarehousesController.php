@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Models\TransferWarehouses;
 use App\Models\Users;
 use App\Models\Warehouses;
 use Illuminate\Http\Request;
@@ -48,7 +49,7 @@ class WarehousesController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $product = Products::where('id', $request->product_id)->first();
         if ($product->warehouse_balance >= $request->quantity) {
-            DB::table('transfer_warehouses')->insert([
+            TransferWarehouses::create([
                 'company_id' => $user->company_id,
                 'from' => $request->from_warehouse,
                 'to' => $request->to_warehouse,
@@ -84,16 +85,16 @@ class WarehousesController extends Controller
     public function warehouseInventory(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        if ($request->from !== null) {
-            return Products::where([
+        if ($request->from_date !== null) {
+            return TransferWarehouses::where([
                 ['company_id', $user->company_id],
-                ['warehouse_id', $request->warehouse_id],
-            ])->whereBetween('created_at', [$request->from, $request->to])->get();
+                ['to_warehouse', $request->warehouse_id],
+            ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
         } else {
-            return Products::where([
+            return TransferWarehouses::where([
                 ['company_id', $user->company_id],
-                ['warehouse_id', $request->warehouse_id],
-            ])->get();
+                ['to_warehouse', $request->warehouse_id],
+            ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
         }
     }
 }

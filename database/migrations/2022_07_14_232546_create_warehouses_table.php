@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('company_id');
             $table->text('warehouse_name');
-            $table->text('branch_id');
+            $table->unsignedInteger('branch_id');
         });
     }
 
