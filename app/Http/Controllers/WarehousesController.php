@@ -123,25 +123,73 @@ class WarehousesController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($request->from_date !== null) {
             if ($request->warehouse_id !== null) {
-                return TransferWarehouses::where([
+                $return = TransferWarehouses::where([
                     ['company_id', $user->company_id],
                     ['to_warehouse', $request->warehouse_id],
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['f_warehouse', 't_warehouse', 'product'])->get();
+                $return = $return->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'from_warehouse' => $item->f_warehouse->warehouse_name,
+                        'to_warehouse' => $item->t_warehouse->warehouse_name,
+                        'product_name' => $item->product->product_name,
+                        'quantity' => $item->quantity,
+                        'date' => $item->date,
+                        'notes' => $item->notes,
+                    ];
+                });
+                return $return;
             } else {
-                return TransferWarehouses::where([
+                $return = TransferWarehouses::where([
                     ['company_id', $user->company_id]
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['f_warehouse', 't_warehouse', 'product'])->get();
+                $return = $return->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'from_warehouse' => $item->f_warehouse->warehouse_name,
+                        'to_warehouse' => $item->t_warehouse->warehouse_name,
+                        'product_name' => $item->product->product_name,
+                        'quantity' => $item->quantity,
+                        'date' => $item->date,
+                        'notes' => $item->notes,
+                    ];
+                });
+                return $return;
             }
         } else {
             if ($request->warehouse_id !== null) {
-                return TransferWarehouses::where([
+                $return = TransferWarehouses::where([
                     ['company_id', $user->company_id],
                     ['to_warehouse', $request->warehouse_id],
-                ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+                ])->with(['f_warehouse', 't_warehouse', 'product'])->get();
+                $return = $return->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'from_warehouse' => $item->f_warehouse->warehouse_name,
+                        'to_warehouse' => $item->t_warehouse->warehouse_name,
+                        'product_name' => $item->product->product_name,
+                        'quantity' => $item->quantity,
+                        'date' => $item->date,
+                        'notes' => $item->notes,
+                    ];
+                });
+                return $return;
             } else {
-                return TransferWarehouses::where([
+                $return = TransferWarehouses::where([
                     ['company_id', $user->company_id]
-                ])->with(['from_warehouse', 'to_warehouse', 'product'])->get();
+                ])->with(['f_warehouse', 't_warehouse', 'product'])->get();
+                $return = $return->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'from_warehouse' => $item->f_warehouse->warehouse_name,
+                        'to_warehouse' => $item->t_warehouse->warehouse_name,
+                        'product_name' => $item->product->product_name,
+                        'quantity' => $item->quantity,
+                        'date' => $item->date,
+                        'notes' => $item->notes,
+                    ];
+                });
+                return $return;
             }
         }
     }

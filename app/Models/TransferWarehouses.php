@@ -24,11 +24,11 @@ class TransferWarehouses extends Model
         'updated_at',
     ];
 
-    public function from_warehouse()
+    public function f_warehouse()
     {
         return $this->belongsTo(Warehouses::class, 'from_warehouse');
     }
-    public function to_warehouse()
+    public function t_warehouse()
     {
         return $this->belongsTo(Warehouses::class, 'to_warehouse');
     }
