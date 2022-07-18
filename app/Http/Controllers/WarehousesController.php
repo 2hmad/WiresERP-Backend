@@ -54,28 +54,17 @@ class WarehousesController extends Controller
         ])->first();
         if ($product !== null) {
             if ($product->warehouse_balance >= $request->quantity) {
-                $checkTransfer = TransferWarehouses::where([
-                    ['company_id', $user->company_id],
-                    ['product_id', $request->product_id],
-                    ['from_warehouse', $request->from_warehouse],
-                    ['to_warehouse', $request->to_warehouse],
-                ])->first();
-                if ($checkTransfer == null) {
-                    TransferWarehouses::create([
-                        'company_id' => $user->company_id,
-                        'from_warehouse' => $request->from_warehouse,
-                        'to_warehouse' => $request->to_warehouse,
-                        'product_id' => $request->product_id,
-                        'quantity' => $request->quantity,
-                        'date' => $request->date,
-                        'notes' => $request->notes,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-                } else {
-                    $checkTransfer->quantity += $request->quantity;
-                    $checkTransfer->save();
-                }
+                TransferWarehouses::create([
+                    'company_id' => $user->company_id,
+                    'from_warehouse' => $request->from_warehouse,
+                    'to_warehouse' => $request->to_warehouse,
+                    'product_id' => $request->product_id,
+                    'quantity' => $request->quantity,
+                    'date' => $request->date,
+                    'notes' => $request->notes,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
                 $checkProduct = Products::where([
                     ['company_id', $user->company_id],
                     ['warehouse_id', $request->to_warehouse],
