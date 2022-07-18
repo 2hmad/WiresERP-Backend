@@ -40,7 +40,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('edit-warehouse', [WarehousesController::class, 'editWarehouse']);
     Route::post('delete-warehouse', [WarehousesController::class, 'deleteWarehouse']);
     Route::post('transfer-warehouses', [WarehousesController::class, 'transferWarehouses']);
-    Route::post('transfer-warehouses', [WarehousesController::class, 'transferWarehouses']);
+    Route::post('all-transfer-warehouses', [WarehousesController::class, 'allTransferWarehouses']);
     Route::post('warehouse-inventory', [WarehousesController::class, 'warehouseInventory']);
 
     Route::post('categories', [CategoriesController::class, 'categories']);

@@ -118,78 +118,49 @@ class WarehousesController extends Controller
             return response()->json(['alert_en' => 'Product is not found', 'alert_ar' => 'المنتج غير موجود في المخزن'], 404);
         }
     }
+    public function allTransferWarehouses(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $return = TransferWarehouses::where([
+            ['company_id', $user->company_id],
+        ])->get();
+        $return = $return->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'from_warehouse' => $item->f_warehouse->warehouse_name,
+                'to_warehouse' => $item->t_warehouse->warehouse_name,
+                'product_name' => $item->product->product_name,
+                'quantity' => $item->quantity,
+                'date' => $item->date,
+                'notes' => $item->notes,
+            ];
+        });
+        return $return;
+    }
     public function warehouseInventory(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($request->from_date !== null) {
             if ($request->warehouse_id !== null) {
-                $return = TransferWarehouses::where([
+                return Products::where([
                     ['company_id', $user->company_id],
-                    ['to_warehouse', $request->warehouse_id],
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['f_warehouse', 't_warehouse', 'product'])->get();
-                $return = $return->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'from_warehouse' => $item->f_warehouse->warehouse_name,
-                        'to_warehouse' => $item->t_warehouse->warehouse_name,
-                        'product_name' => $item->product->product_name,
-                        'quantity' => $item->quantity,
-                        'date' => $item->date,
-                        'notes' => $item->notes,
-                    ];
-                });
-                return $return;
+                    ['warehouse_id', $request->warehouse_id],
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->get();
             } else {
-                $return = TransferWarehouses::where([
-                    ['company_id', $user->company_id]
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->with(['f_warehouse', 't_warehouse', 'product'])->get();
-                $return = $return->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'from_warehouse' => $item->f_warehouse->warehouse_name,
-                        'to_warehouse' => $item->t_warehouse->warehouse_name,
-                        'product_name' => $item->product->product_name,
-                        'quantity' => $item->quantity,
-                        'date' => $item->date,
-                        'notes' => $item->notes,
-                    ];
-                });
-                return $return;
+                return Products::where([
+                    ['company_id', $user->company_id],
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->get();
             }
         } else {
             if ($request->warehouse_id !== null) {
-                $return = TransferWarehouses::where([
+                return Products::where([
                     ['company_id', $user->company_id],
-                    ['to_warehouse', $request->warehouse_id],
-                ])->with(['f_warehouse', 't_warehouse', 'product'])->get();
-                $return = $return->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'from_warehouse' => $item->f_warehouse->warehouse_name,
-                        'to_warehouse' => $item->t_warehouse->warehouse_name,
-                        'product_name' => $item->product->product_name,
-                        'quantity' => $item->quantity,
-                        'date' => $item->date,
-                        'notes' => $item->notes,
-                    ];
-                });
-                return $return;
+                    ['warehouse_id', $request->warehouse_id],
+                ])->get();
             } else {
-                $return = TransferWarehouses::where([
-                    ['company_id', $user->company_id]
-                ])->with(['f_warehouse', 't_warehouse', 'product'])->get();
-                $return = $return->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'from_warehouse' => $item->f_warehouse->warehouse_name,
-                        'to_warehouse' => $item->t_warehouse->warehouse_name,
-                        'product_name' => $item->product->product_name,
-                        'quantity' => $item->quantity,
-                        'date' => $item->date,
-                        'notes' => $item->notes,
-                    ];
-                });
-                return $return;
+                return Products::where([
+                    ['company_id', $user->company_id],
+                ])->get();
             }
         }
     }
