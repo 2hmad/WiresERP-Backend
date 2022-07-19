@@ -32,7 +32,7 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::get('/countries', function () {
-    return Countries::all();
+    return Countries::get();
 });
 
 Route::group(['middleware' => 'uToken'], function () {
