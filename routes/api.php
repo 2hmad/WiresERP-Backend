@@ -6,6 +6,7 @@ use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DebtsController;
+use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WarehousesController;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('edit-supplier', [DebtsController::class, 'editSupplier']);
     Route::post('delete-supplier', [DebtsController::class, 'deleteSupplier']);
 
-
     Route::post('add-safe', [BanksController::class, 'addSafe']);
+
+    Route::get('permissions', [PermissionsController::class, 'permissions']);
 });

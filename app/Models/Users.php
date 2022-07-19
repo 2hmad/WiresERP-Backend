@@ -24,4 +24,9 @@ class Users extends Model
         'password'
     ];
     public $timestamps = false;
+
+    public function branch()
+    {
+        return $this->hasOne(Branches::class, 'id', 'branch_id');
+    }
 }

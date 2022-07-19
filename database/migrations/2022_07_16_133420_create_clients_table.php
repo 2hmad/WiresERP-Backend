@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('c_phone')->nullable();
             $table->text('c_address')->nullable();
             $table->text('c_notes')->nullable();
-            $table->text('deal_type')->nullable();
+            $table->text('deal_type');
             $table->text('c_email')->nullable();
             $table->text('c_company')->nullable();
             $table->text('c_nationality')->nullable();
