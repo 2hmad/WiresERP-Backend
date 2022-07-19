@@ -46,10 +46,10 @@ class DebtsController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $client = Clients::where([
             ['company_id', '=', $user->company_id],
-            ['id', '=', $request->c_id]
+            ['id', '=', $request->id]
         ])->first();
         if ($client !== null) {
-            Clients::where('id', $request->c_id)->update([
+            Clients::where('id', $request->id)->update([
                 'c_name' => $request->c_name,
                 'releated_user' => $request->releated_user,
                 'indebt_type' => $request->indebt_type,
@@ -72,10 +72,10 @@ class DebtsController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $check = Clients::where([
             ['company_id', $user->company_id],
-            ['id', $request->c_id]
+            ['id', $request->id]
         ])->first();
         if ($check !== null) {
-            Clients::where('id', $request->c_id)->delete();
+            Clients::where('id', $request->id)->delete();
         } else {
             return response()->json(['alert_en' => 'Client not found', 'alert_ar' => 'العميل ليس موجود'], 404);
         }
@@ -116,10 +116,10 @@ class DebtsController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $supplier = Suppliers::where([
             ['company_id', '=', $user->company_id],
-            ['id', '=', $request->s_id]
+            ['id', '=', $request->id]
         ])->first();
         if ($supplier !== null) {
-            Suppliers::where('id', $request->s_id)->update([
+            Suppliers::where('id', $request->id)->update([
                 's_name' => $request->s_name,
                 'indebt_type' => $request->indebt_type,
                 'indebt_amount' => $request->indebt_amount,
@@ -141,10 +141,10 @@ class DebtsController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $check = Suppliers::where([
             ['company_id', $user->company_id],
-            ['id', $request->s_id]
+            ['id', $request->id]
         ])->first();
         if ($check !== null) {
-            Suppliers::where('id', $request->s_id)->delete();
+            Suppliers::where('id', $request->id)->delete();
         } else {
             return response()->json(['alert_en' => 'Supplier not found', 'alert_ar' => 'المورد ليس موجود'], 404);
         }
