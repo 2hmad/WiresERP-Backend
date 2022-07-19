@@ -43,6 +43,10 @@ class WarehousesController extends Controller
             ['company_id', $user->company_id],
             ['id', $request->warehouse_id],
         ])->delete();
+        Products::where([
+            ['company_id', $user->company_id],
+            ['warehouse_id', $request->warehouse_id],
+        ])->delete();
     }
     public function transferWarehouses(Request $request)
     {
@@ -96,7 +100,7 @@ class WarehousesController extends Controller
                     ['company_id', $user->company_id],
                     ['warehouse_id', $request->from_warehouse],
                 ])->first();
-                if ($getOld->warehouse_balance > $request->quantity) {
+                if ($getOld->warehouse_balance >= $request->quantity) {
                     $getOld->warehouse_balance -= $request->quantity;
                     $getOld->save();
                 }
