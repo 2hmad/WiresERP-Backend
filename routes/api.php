@@ -72,6 +72,8 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('edit-supplier', [DebtsController::class, 'editSupplier']);
     Route::post('delete-supplier', [DebtsController::class, 'deleteSupplier']);
 
+    Route::get('safes', [BanksController::class, 'safes']);
+    Route::delete('safes', [BanksController::class, 'deleteSafe']);
     Route::post('add-safe', [BanksController::class, 'addSafe']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);

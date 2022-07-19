@@ -19,11 +19,15 @@ class WarehousesController extends Controller
     public function addWarehouse(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        Warehouses::create([
-            'company_id' => $user->company_id,
-            'warehouse_name' => $request->warehouse_name,
-            'branch_id' => $request->branch_id,
-        ]);
+        if ($user->role == 'manager') {
+            Warehouses::create([
+                'company_id' => $user->company_id,
+                'warehouse_name' => $request->warehouse_name,
+                'branch_id' => $request->branch_id,
+            ]);
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
     }
     public function editWarehouse(Request $request)
     {
