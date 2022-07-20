@@ -323,4 +323,38 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
+    public function deleteBankToSafe(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        if ($user->role == 'manager') {
+            // Delete bank to safe transfer process
+            $checkTransfer = BankToSafe::where([
+                ['id', $request->id],
+                ['company_id', $user->company_id]
+            ])->first();
+            if ($checkTransfer !== null) {
+                $checkFrom = Banks::where([
+                    ['id', $checkTransfer->from_bank],
+                    ['company_id', $user->company_id]
+                ])->first();
+                $checkTo = Safes::where([
+                    ['id', $checkTransfer->to_safe],
+                    ['company_id', $user->company_id]
+                ])->first();
+                if ($checkFrom !== null && $checkTo !== null) {
+                    $checkFrom->bank_balance += $checkTransfer->amount;
+                    $checkFrom->save();
+                    $checkTo->safe_balance -= $checkTransfer->amount;
+                    $checkTo->save();
+                    $checkTransfer->delete();
+                } else {
+                    return response()->json(['alert_en' => 'Bank is not exist', 'alert_ar' => 'الحساب البنكي غير موجودة'], 400);
+                }
+            } else {
+                return response()->json(['alert_en' => 'Process not exists', 'alert_ar' => 'العملية غير موجود'], 400);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
 }
