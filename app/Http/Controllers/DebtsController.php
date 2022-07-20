@@ -26,7 +26,7 @@ class DebtsController extends Controller
                 Clients::create([
                     'company_id' => $user->company_id,
                     'c_name' => $request->c_name,
-                    'releated_user' => $request->releated_user ? $request->releated_user : $user->id,
+                    'releated_user' => $request->releated_user ? $request->releated_user : null,
                     'indebt_type' => $request->indebt_type,
                     'indebt_amount' => $request->indebt_amount,
                     'c_phone' => $request->c_phone,
@@ -56,7 +56,7 @@ class DebtsController extends Controller
             if ($client !== null) {
                 Clients::where('id', $request->id)->update([
                     'c_name' => $request->c_name,
-                    'releated_user' => $request->releated_user ? $request->releated_user : $user->id,
+                    'releated_user' => $request->releated_user ? $request->releated_user : null,
                     'indebt_type' => $request->indebt_type,
                     'indebt_amount' => $request->indebt_amount,
                     'c_phone' => $request->c_phone,
