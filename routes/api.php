@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DebtsController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SafesController;
 use App\Http\Controllers\WarehousesController;
 use App\Models\Countries;
 use Illuminate\Http\Request;
@@ -72,9 +73,20 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::post('edit-supplier', [DebtsController::class, 'editSupplier']);
     Route::post('delete-supplier', [DebtsController::class, 'deleteSupplier']);
 
-    Route::get('safes', [BanksController::class, 'safes']);
-    Route::delete('safes', [BanksController::class, 'deleteSafe']);
-    Route::post('add-safe', [BanksController::class, 'addSafe']);
+    Route::get('safes', [SafesController::class, 'safes']);
+    Route::post('safes', [SafesController::class, 'addSafe']);
+    Route::put('safes', [SafesController::class, 'editSafe']);
+    Route::delete('safes', [SafesController::class, 'deleteSafe']);
+    Route::get('transfer-safes', [SafesController::class, 'allTransfers']);
+    Route::post('transfer-safes', [SafesController::class, 'transferSafes']);
+
+    Route::get('banks', [BanksController::class, 'banks']);
+    Route::post('banks', [BanksController::class, 'addBank']);
+    Route::put('banks', [BanksController::class, 'editBank']);
+    Route::delete('banks', [BanksController::class, 'deleteBank']);
+    Route::get('bank-activity', [BanksController::class, 'bankActivities']);
+    Route::post('bank-activity', [BanksController::class, 'addBankActivity']);
+    Route::delete('bank-activity', [BanksController::class, 'deleteBankActivity']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 });

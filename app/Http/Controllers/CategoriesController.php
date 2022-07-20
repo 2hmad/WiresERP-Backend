@@ -13,7 +13,7 @@ class CategoriesController extends Controller
     public function categories(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return DB::table('categories')->where('company_id', $user->company_id)->get();
+        return DB::table('categories')->where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
     }
     public function addCategory(Request $request)
     {
@@ -89,7 +89,7 @@ class CategoriesController extends Controller
     public function sub_categories(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return SubCategory::where('company_id', $user->company_id)->with('category')->get();
+        return SubCategory::where('company_id', $user->company_id)->with('category')->orderBy('id', 'DESC')->get();
     }
     public function addSubCategory(Request $request)
     {

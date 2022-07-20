@@ -12,7 +12,7 @@ class DebtsController extends Controller
     public function clients(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Clients::where('company_id', $user->company_id)->get();
+        return Clients::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
     }
     public function addClient(Request $request)
     {
@@ -95,7 +95,7 @@ class DebtsController extends Controller
     public function suppliers(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Suppliers::where('company_id', $user->company_id)->get();
+        return Suppliers::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
     }
     public function addSupplier(Request $request)
     {

@@ -14,7 +14,7 @@ class WarehousesController extends Controller
     public function warehouses(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Warehouses::where('company_id', $user->company_id)->get();
+        return Warehouses::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
     }
     public function addWarehouse(Request $request)
     {
@@ -120,7 +120,7 @@ class WarehousesController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $return = TransferWarehouses::where([
             ['company_id', $user->company_id],
-        ])->get();
+        ])->orderBy('id', 'DESC')->get();
         $return = $return->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -142,22 +142,22 @@ class WarehousesController extends Controller
                 return Products::where([
                     ['company_id', $user->company_id],
                     ['warehouse_id', $request->warehouse_id],
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->get();
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->orderBy('id', 'DESC')->get();
             } else {
                 return Products::where([
                     ['company_id', $user->company_id],
-                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->get();
+                ])->whereBetween('created_at', [$request->from_date, $request->to_date])->orderBy('id', 'DESC')->get();
             }
         } else {
             if ($request->warehouse_id !== null) {
                 return Products::where([
                     ['company_id', $user->company_id],
                     ['warehouse_id', $request->warehouse_id],
-                ])->get();
+                ])->orderBy('id', 'DESC')->get();
             } else {
                 return Products::where([
                     ['company_id', $user->company_id],
-                ])->get();
+                ])->orderBy('id', 'DESC')->get();
             }
         }
     }

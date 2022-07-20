@@ -11,7 +11,7 @@ class PermissionsController extends Controller
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
-            $user =  Users::where('company_id', $user->company_id)->with('branch')->get([
+            $user =  Users::where('company_id', $user->company_id)->with('branch')->orderBy('id', 'DESC')->get([
                 'id',
                 'full_name',
                 'email',

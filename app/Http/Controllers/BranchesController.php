@@ -11,7 +11,7 @@ class BranchesController extends Controller
     public function branches(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Branches::where('company_id', $user->company_id)->get();
+        return Branches::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
     }
     public function addBranch(Request $request)
     {
