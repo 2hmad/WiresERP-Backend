@@ -87,6 +87,12 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::get('bank-activity', [BanksController::class, 'bankActivities']);
     Route::post('bank-activity', [BanksController::class, 'addBankActivity']);
     Route::delete('bank-activity', [BanksController::class, 'deleteBankActivity']);
+    Route::get('transfer-banks', [BanksController::class, 'transferBanks']);
+    Route::post('transfer-banks', [BanksController::class, 'addTransferBanks']);
+    Route::delete('transfer-banks', [BanksController::class, 'deleteTransferBanks']);
+    Route::get('bank-to-safe', [BanksController::class, 'bankToSafe']);
+    Route::post('bank-to-safe', [BanksController::class, 'addBankToSafe']);
+    Route::delete('bank-to-safe', [BanksController::class, 'deleteBankToSafe']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 });
