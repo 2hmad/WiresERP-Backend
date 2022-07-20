@@ -93,6 +93,9 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::get('bank-to-safe', [BanksController::class, 'bankToSafe']);
     Route::post('bank-to-safe', [BanksController::class, 'addBankToSafe']);
     Route::delete('bank-to-safe', [BanksController::class, 'deleteBankToSafe']);
+    Route::get('safe-to-bank', [BanksController::class, 'SafeToBank']);
+    Route::post('safe-to-bank', [BanksController::class, 'addSafeToBank']);
+    Route::delete('safe-to-bank', [BanksController::class, 'deleteSafeToBank']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 });

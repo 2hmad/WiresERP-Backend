@@ -7,6 +7,7 @@ use App\Models\Banks;
 use App\Models\BanksTransfer;
 use App\Models\BankToSafe;
 use App\Models\Safes;
+use App\Models\SafeToBank;
 use App\Models\Users;
 use Illuminate\Http\Request;
 
@@ -349,6 +350,100 @@ class BanksController extends Controller
                     $checkTransfer->delete();
                 } else {
                     return response()->json(['alert_en' => 'Bank is not exist', 'alert_ar' => 'الحساب البنكي غير موجودة'], 400);
+                }
+            } else {
+                return response()->json(['alert_en' => 'Process not exists', 'alert_ar' => 'العملية غير موجود'], 400);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
+    public function safeToBank(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        if ($user->role == 'manager') {
+            // get bank to safe transfers processess
+            $safeToBank = SafeToBank::where('company_id', $user->company_id)->with(['user', 'bank', 'safe'])->orderBy('id', 'DESC')->get();
+            $safeToBank = $safeToBank->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'safe' => $item->safe->safe_name,
+                    'bank' => $item->bank->bank_name,
+                    'amount' => $item->amount,
+                    'notes' => $item->notes,
+                    'admin' => $item->user->full_name
+                ];
+            });
+            return $safeToBank;
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
+    public function addSafeToBank(Request $request)
+    {
+        // transfer funds from safe to bank
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        if ($user->role == 'manager') {
+            $checkSafe = Safes::where([
+                ['id', $request->safe_id],
+                ['company_id', $user->company_id]
+            ])->first();
+            $checkBank = Banks::where([
+                ['id', $request->bank_id],
+                ['company_id', $user->company_id]
+            ])->first();
+            if ($checkSafe !== null && $checkBank !== null) {
+                if ($checkSafe->safe_balance >= $request->amount) {
+                    $checkSafe->safe_balance -= $request->amount;
+                    $checkSafe->save();
+                    $checkBank->bank_balance += $request->amount;
+                    $checkBank->save();
+                    SafeToBank::create([
+                        'company_id' => $user->company_id,
+                        'user_id' => $user->id,
+                        'from_safe' => $request->safe_id,
+                        'to_bank' => $request->bank_id,
+                        'amount' => $request->amount,
+                        'notes' => $request->notes,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                } else {
+                    return response()->json(['alert_en' => 'Account balance is not enough', 'alert_ar' => 'رصيد الحساب ليس كافي'], 400);
+                }
+            } else {
+                return response()->json(['alert_en' => 'Bank or Safe is not exist', 'alert_ar' => 'الحساب البنكي او الخزينة غير موجودة'], 400);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
+    public function deleteSafeToBank(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        if ($user->role == 'manager') {
+            // Delete bank to safe transfer process
+            $checkTransfer = SafeToBank::where([
+                ['id', $request->id],
+                ['company_id', $user->company_id]
+            ])->first();
+            if ($checkTransfer !== null) {
+                $checkFrom = Safes::where([
+                    ['id', $checkTransfer->from_safe],
+                    ['company_id', $user->company_id]
+                ])->first();
+                $checkTo = Banks::where([
+                    ['id', $checkTransfer->to_bank],
+                    ['company_id', $user->company_id]
+                ])->first();
+                if ($checkFrom !== null && $checkTo !== null) {
+                    $checkFrom->safe_balance += $checkTransfer->amount;
+                    $checkFrom->save();
+                    $checkTo->bank_balance -= $checkTransfer->amount;
+                    $checkTo->save();
+                    $checkTransfer->delete();
+                } else {
+                    return response()->json(['alert_en' => 'Bank or Safe is not exist', 'alert_ar' => 'الحساب البنكي او الخزينة غير موجودة'], 400);
                 }
             } else {
                 return response()->json(['alert_en' => 'Process not exists', 'alert_ar' => 'العملية غير موجود'], 400);
