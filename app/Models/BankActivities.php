@@ -20,4 +20,12 @@ class BankActivities extends Model
         'created_at',
         'updated_at',
     ];
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'user_id');
+    }
+    public function bank()
+    {
+        return $this->belongsTo(Banks::class, 'bank_id');
+    }
 }

@@ -86,7 +86,18 @@ class BanksController extends Controller
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
-            return Banks::where('company_id', $user->company_id)->get();
+            $activities = BankActivities::where('company_id', $user->company_id)->with(['user', 'bank'])->orderBy('id', 'DESC')->get();
+            $activities = $activities->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'process_type' => $item->type,
+                    'bank_name' => $item->bank->bank_name,
+                    'amount' => $item->amount,
+                    'notes' => $item->notes,
+                    'admin' => $item->user->name
+                ];
+            });
+            return $activities;
         } else {
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
