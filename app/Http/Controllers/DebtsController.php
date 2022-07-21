@@ -18,7 +18,7 @@ class DebtsController extends Controller
                 "id" => $item->id,
                 "company_id" => $item->company_id,
                 "c_name" => $item->c_name,
-                "releated_user" => $item->user ? $item->user->full_name : 'All Users',
+                "releated_user" => $item->user ? $item->user->full_name : null,
                 "indebt_type" => $item->idebt_type,
                 "indebt_amount" => $item->indebt_amount,
                 "c_phone" => $item->c_phone,
