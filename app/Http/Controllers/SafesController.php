@@ -63,17 +63,17 @@ class SafesController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteSafe(Request $request)
+    public function deleteSafe(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             $check = Safes::where([
                 ['company_id', $user->company_id],
-                ['id', '=', $request->id]
+                ['id', '=', $id]
             ])->first();
             if ($check !== null) {
                 return Safes::where([
-                    ['id', '=', $request->id],
+                    ['id', '=', $id],
                     ['company_id', '=', $user->company_id],
                 ])->delete();
             } else {

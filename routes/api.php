@@ -77,7 +77,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::get('safes', [SafesController::class, 'safes']);
     Route::post('safes', [SafesController::class, 'addSafe']);
     Route::put('safes', [SafesController::class, 'editSafe']);
-    Route::delete('safes', [SafesController::class, 'deleteSafe']);
+    Route::delete('safes/{id}', [SafesController::class, 'deleteSafe']);
     Route::get('transfer-safes', [SafesController::class, 'allTransfers']);
     Route::post('transfer-safes', [SafesController::class, 'transferSafes']);
 
