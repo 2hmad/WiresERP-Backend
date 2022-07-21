@@ -14,41 +14,22 @@ class DebtsController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         $clients = Clients::where('company_id', $user->company_id)->with('user')->orderBy('id', 'DESC')->get();
         $clients = $clients->map(function ($item) {
-            if ($item->releated_user !== null) {
-                return [
-                    "id" => $item->id,
-                    "company_id" => $item->company_id,
-                    "c_name" => $item->c_name,
-                    "releated_user" => $item->user->full_name,
-                    "indebt_type" => $item->idebt_type,
-                    "indebt_amount" => $item->indebt_amount,
-                    "c_phone" => $item->c_phone,
-                    "c_address" => $item->c_address,
-                    "c_notes" => $item->c_notes,
-                    "deal_type" => $item->deal_type,
-                    "c_email" => $item->c_email,
-                    "c_company" => $item->c_company,
-                    "c_nationality" => $item->c_nationality,
-                    "c_tax_number" => $item->c_tax_number
-                ];
-            } else {
-                return [
-                    "id" => $item->id,
-                    "company_id" => $item->company_id,
-                    "c_name" => $item->c_name,
-                    "releated_user" => null,
-                    "indebt_type" => $item->idebt_type,
-                    "indebt_amount" => $item->indebt_amount,
-                    "c_phone" => $item->c_phone,
-                    "c_address" => $item->c_address,
-                    "c_notes" => $item->c_notes,
-                    "deal_type" => $item->deal_type,
-                    "c_email" => $item->c_email,
-                    "c_company" => $item->c_company,
-                    "c_nationality" => $item->c_nationality,
-                    "c_tax_number" => $item->c_tax_number
-                ];
-            }
+            return [
+                "id" => $item->id,
+                "company_id" => $item->company_id,
+                "c_name" => $item->c_name,
+                "releated_user" => $item->user ? $item->user->full_name : 'All Users',
+                "indebt_type" => $item->idebt_type,
+                "indebt_amount" => $item->indebt_amount,
+                "c_phone" => $item->c_phone,
+                "c_address" => $item->c_address,
+                "c_notes" => $item->c_notes,
+                "deal_type" => $item->deal_type,
+                "c_email" => $item->c_email,
+                "c_company" => $item->c_company,
+                "c_nationality" => $item->c_nationality,
+                "c_tax_number" => $item->c_tax_number
+            ];
         });
         return $clients;
     }
