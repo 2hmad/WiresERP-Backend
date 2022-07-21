@@ -146,4 +146,38 @@ class SafesController extends Controller
             }
         }
     }
+    public function deleteTransferSafes(Request $request, $id)
+    {
+        // Delete transfer safes by id
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        if ($user->role == 'manager') {
+            $check = TransferSafes::where([
+                ['company_id', $user->company_id],
+                ['id', '=', $id]
+            ])->first();
+            if ($check !== null) {
+                $checkFrom = Safes::where([
+                    ['id', $check->from_safe],
+                    ['company_id', $user->company_id]
+                ])->first();
+                $checkTo = Safes::where([
+                    ['id', $check->to_safe],
+                    ['company_id', $user->company_id]
+                ])->first();
+                if ($checkFrom !== null && $checkTo !== null) {
+                    $checkFrom->safe_balance += $check->amount;
+                    $checkFrom->save();
+                    $checkTo->safe_balance -= $check->amount;
+                    $checkTo->save();
+                    $check->delete();
+                } else {
+                    return response()->json(['alert_en' => 'Safe is not exist', 'alert_ar' => 'الخزنة غير موجودة'], 400);
+                }
+            } else {
+                return response()->json(['alert_en' => 'Safe is not exist', 'alert_ar' => 'الخزنة غير موجودة'], 400);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
 }

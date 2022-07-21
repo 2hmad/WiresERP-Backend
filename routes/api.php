@@ -80,6 +80,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::delete('safes/{id}', [SafesController::class, 'deleteSafe']);
     Route::get('transfer-safes', [SafesController::class, 'allTransfers']);
     Route::post('transfer-safes', [SafesController::class, 'transferSafes']);
+    Route::delete('transfer-safes/{id}', [SafesController::class, 'deleteTransferSafes']);
 
     Route::get('banks', [BanksController::class, 'banks']);
     Route::post('banks', [BanksController::class, 'addBank']);
