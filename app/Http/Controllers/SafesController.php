@@ -116,11 +116,11 @@ class SafesController extends Controller
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             $checkFrom = Safes::where([
-                ['id', $request->from_safe],
+                ['id', $request->from_safe_id],
                 ['company_id', $user->company_id]
             ])->first();
             $checkTo = Safes::where([
-                ['id', $request->to_safe],
+                ['id', $request->to_safe_id],
                 ['company_id', $user->company_id]
             ])->first();
             if ($checkFrom !== null && $checkTo !== null) {
@@ -131,8 +131,8 @@ class SafesController extends Controller
                     $checkTo->save();
                     TransferSafes::create([
                         'company_id' => $user->company_id,
-                        'from_safe' => $request->from_safe,
-                        'to_safe' => $request->to_safe,
+                        'from_safe' => $request->from_safe_id,
+                        'to_safe' => $request->to_safe_id,
                         'amount' => $request->amount,
                         'notes' => $request->notes,
                         'created_at' => date('Y-m-d H:i:s'),
