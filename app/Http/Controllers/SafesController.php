@@ -101,8 +101,8 @@ class SafesController extends Controller
         $transfers = $transfers->map(function ($item) {
             return [
                 "id" => $item->id,
-                "from_safe_id" => $item->from_safe_id,
-                "to_safe_id" => $item->to_safe_id,
+                "from_safe_id" => $item->from_safe,
+                "to_safe_id" => $item->to_safe,
                 "from_safe" => $item->fromSafe ? $item->fromSafe->safe_name : null,
                 "to_safe" => $item->toSafe ? $item->toSafe->safe_name : null,
                 "amount" => 100,
