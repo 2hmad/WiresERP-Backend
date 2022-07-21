@@ -12,7 +12,17 @@ class SafesController extends Controller
     public function safes(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Safes::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
+        $safes = Safes::where('company_id', $user->company_id)->with('branch')->orderBy('id', 'DESC')->get();
+        $safes = $safes->map(function ($item) {
+            return [
+                "id" => $item->id,
+                "safe_name" => $item->safe_name,
+                "branch_id" => $item->branch ? $item->branch->branch_name : null,
+                "safe_balance" => $item->safe_balance,
+                "safe_type" => $item->safe_type
+            ];
+        });
+        return $safes;
     }
     public function addSafe(Request $request)
     {

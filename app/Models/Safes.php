@@ -11,4 +11,8 @@ class Safes extends Model
     protected $fillable = ['company_id', 'safe_name', 'branch_id', 'safe_balance', 'safe_type'];
     protected $hidden = [];
     public $timestamps = false;
+    public function branch()
+    {
+        return $this->belongsTo(Branches::class, 'branch_id');
+    }
 }
