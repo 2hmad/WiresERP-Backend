@@ -97,7 +97,19 @@ class SafesController extends Controller
     public function allTransfers(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return TransferSafes::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
+        $transfers = TransferSafes::where('company_id', $user->company_id)->with(['fromSafe', 'toSafe'])->orderBy('id', 'DESC')->get();
+        $transfers = $transfers->map(function ($item) {
+            return [
+                "id" => $item->id,
+                "from_safe_id" => $item->from_safe_id,
+                "to_safe_id" => $item->to_safe_id,
+                "from_safe" => $item->fromSafe->safe_name,
+                "to_safe" => $item->toSafe->safe_name,
+                "amount" => 100,
+                "notes" => null
+            ];
+        });
+        return $transfers;
     }
     public function transferSafes(Request $request)
     {

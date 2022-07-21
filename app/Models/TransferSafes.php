@@ -14,4 +14,12 @@ class TransferSafes extends Model
         'created_at',
         'updated_at',
     ];
+    public function fromSafe()
+    {
+        return $this->belongsTo(Safes::class, 'from_safe');
+    }
+    public function toSafe()
+    {
+        return $this->belongsTo(Safes::class, 'to_safe');
+    }
 }
