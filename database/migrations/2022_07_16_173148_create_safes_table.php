@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('company_id');
             $table->text('safe_name');
             $table->unsignedInteger('branch_id')->nullable();
-            $table->text('safe_balance');
+            $table->unsignedInteger('safe_balance');
             $table->text('safe_type');
         });
     }

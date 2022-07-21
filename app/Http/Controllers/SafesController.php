@@ -17,7 +17,8 @@ class SafesController extends Controller
             return [
                 "id" => $item->id,
                 "safe_name" => $item->safe_name,
-                "branch_id" => $item->branch ? $item->branch->branch_name : null,
+                "branch_id" => $item->branch_id,
+                "branch" => $item->branch ? $item->branch->branch_name : null,
                 "safe_balance" => $item->safe_balance,
                 "safe_type" => $item->safe_type
             ];
