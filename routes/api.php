@@ -84,24 +84,24 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::get('banks', [BanksController::class, 'banks']);
     Route::post('banks', [BanksController::class, 'addBank']);
     Route::put('banks', [BanksController::class, 'editBank']);
-    Route::delete('banks', [BanksController::class, 'deleteBank']);
+    Route::delete('banks/{id}', [BanksController::class, 'deleteBank']);
     Route::get('bank-activity', [BanksController::class, 'bankActivities']);
     Route::post('bank-activity', [BanksController::class, 'addBankActivity']);
-    Route::delete('bank-activity', [BanksController::class, 'deleteBankActivity']);
+    Route::delete('bank-activity/{id}', [BanksController::class, 'deleteBankActivity']);
     Route::get('transfer-banks', [BanksController::class, 'transferBanks']);
     Route::post('transfer-banks', [BanksController::class, 'addTransferBanks']);
-    Route::delete('transfer-banks', [BanksController::class, 'deleteTransferBanks']);
+    Route::delete('transfer-banks/{id}', [BanksController::class, 'deleteTransferBanks']);
     Route::get('bank-to-safe', [BanksController::class, 'bankToSafe']);
     Route::post('bank-to-safe', [BanksController::class, 'addBankToSafe']);
-    Route::delete('bank-to-safe', [BanksController::class, 'deleteBankToSafe']);
+    Route::delete('bank-to-safe/{id}', [BanksController::class, 'deleteBankToSafe']);
     Route::get('safe-to-bank', [BanksController::class, 'SafeToBank']);
     Route::post('safe-to-bank', [BanksController::class, 'addSafeToBank']);
-    Route::delete('safe-to-bank', [BanksController::class, 'deleteSafeToBank']);
+    Route::delete('safe-to-bank/{id}', [BanksController::class, 'deleteSafeToBank']);
 
     Route::get('coupons', [CouponsController::class, 'coupons']);
     Route::post('coupons', [CouponsController::class, 'addCoupon']);
     Route::put('coupons', [CouponsController::class, 'editCoupon']);
-    Route::delete('coupons', [CouponsController::class, 'deleteCoupon']);
+    Route::delete('coupons/{id}', [CouponsController::class, 'deleteCoupon']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 });

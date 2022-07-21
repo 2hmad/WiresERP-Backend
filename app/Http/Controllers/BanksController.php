@@ -66,17 +66,17 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteBank(Request $request)
+    public function deleteBank(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             $bank = Banks::where([
                 ['company_id', $user->company_id],
-                ['id', '=', $request->id]
+                ['id', '=', $id]
             ])->first();
             if ($bank !== null) {
                 return Banks::where([
-                    ['id', '=', $request->id],
+                    ['id', '=', $id],
                     ['company_id', '=', $user->company_id],
                 ])->delete();
             } else {
@@ -142,12 +142,12 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteBankActivity(Request $request)
+    public function deleteBankActivity(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             $checkActivity = BankActivities::where([
-                ['id', $request->id],
+                ['id', $id],
                 ['company_id', $user->company_id]
             ])->first();
             if ($checkActivity !== null) {
@@ -231,12 +231,12 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteTransferBanks(Request $request)
+    public function deleteTransferBanks(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             $checkTransfer = BanksTransfer::where([
-                ['id', $request->id],
+                ['id', $id],
                 ['company_id', $user->company_id]
             ])->first();
             if ($checkTransfer !== null) {
@@ -324,13 +324,13 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteBankToSafe(Request $request)
+    public function deleteBankToSafe(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             // Delete bank to safe transfer process
             $checkTransfer = BankToSafe::where([
-                ['id', $request->id],
+                ['id', $id],
                 ['company_id', $user->company_id]
             ])->first();
             if ($checkTransfer !== null) {
@@ -418,13 +418,13 @@ class BanksController extends Controller
             return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
-    public function deleteSafeToBank(Request $request)
+    public function deleteSafeToBank(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         if ($user->role == 'manager') {
             // Delete bank to safe transfer process
             $checkTransfer = SafeToBank::where([
-                ['id', $request->id],
+                ['id', $id],
                 ['company_id', $user->company_id]
             ])->first();
             if ($checkTransfer !== null) {

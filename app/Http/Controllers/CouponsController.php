@@ -179,17 +179,17 @@ class CouponsController extends Controller
             return response()->json(['alert_en' => 'Coupon not found', 'alert_ar' => 'الكوبون غير موجود'], 404);
         }
     }
-    public function deleteCoupon(Request $request)
+    public function deleteCoupon(Request $request, $id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         $coupon = Coupons::where([
             ['company_id', $user->company_id],
-            ['id', $request->id]
+            ['id', $id]
         ])->first();
         if ($coupon !== null) {
             Coupons::where([
                 ['company_id', $user->company_id],
-                ['id', $request->id]
+                ['id', $id]
             ])->delete();
         } else {
             return response()->json(['alert_en' => 'Coupon not found', 'alert_ar' => 'الكوبون غير موجود'], 404);
