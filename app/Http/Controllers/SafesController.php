@@ -105,8 +105,8 @@ class SafesController extends Controller
                 "to_safe_id" => $item->to_safe,
                 "from_safe" => $item->fromSafe ? $item->fromSafe->safe_name : null,
                 "to_safe" => $item->toSafe ? $item->toSafe->safe_name : null,
-                "amount" => 100,
-                "notes" => null
+                "amount" => $item->amount,
+                "notes" => $item->notes ? $item->notes : null
             ];
         });
         return $transfers;
