@@ -26,4 +26,9 @@ class Clients extends Model
         'updated_at'
     ];
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'releated_user');
+    }
 }
