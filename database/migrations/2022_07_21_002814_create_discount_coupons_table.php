@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('company_id');
             $table->string('code');
-            $table->text('amount');
+            $table->unsignedFloat('amount');
             $table->date('expire_date');
-            $table->date('section');
-            $table->date('client_id')->nullable();
-            $table->date('category_id')->nullable();
-            $table->date('product_id')->nullable();
+            $table->text('section');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
+            $table->unsignedInteger('product_id')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\BanksController;
 use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\DebtsController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductsController;
@@ -96,6 +97,11 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::get('safe-to-bank', [BanksController::class, 'SafeToBank']);
     Route::post('safe-to-bank', [BanksController::class, 'addSafeToBank']);
     Route::delete('safe-to-bank', [BanksController::class, 'deleteSafeToBank']);
+
+    Route::get('coupons', [CouponsController::class, 'coupons']);
+    Route::post('coupons', [CouponsController::class, 'addCoupon']);
+    Route::put('coupons', [CouponsController::class, 'editCoupon']);
+    Route::delete('coupons', [CouponsController::class, 'deleteCoupon']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 });
