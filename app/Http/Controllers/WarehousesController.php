@@ -124,9 +124,9 @@ class WarehousesController extends Controller
         $return = $return->map(function ($item) {
             return [
                 'id' => $item->id,
-                'from_warehouse' => $item->f_warehouse->warehouse_name,
-                'to_warehouse' => $item->t_warehouse->warehouse_name,
-                'product_name' => $item->product->product_name,
+                'from_warehouse' => $item->f_warehouse ? $item->f_warehouse->warehouse_name : null,
+                'to_warehouse' => $item->t_warehouse ? $item->t_warehouse->warehouse_name : null,
+                'product_name' => $item->product ? $item->product->product_name : null,
                 'quantity' => $item->quantity,
                 'date' => $item->date,
                 'notes' => $item->notes,
