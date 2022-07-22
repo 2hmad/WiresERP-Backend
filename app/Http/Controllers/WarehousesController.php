@@ -51,6 +51,14 @@ class WarehousesController extends Controller
             ['company_id', $user->company_id],
             ['warehouse_id', $request->warehouse_id],
         ])->delete();
+        TransferWarehouses::where([
+            ['company_id', $user->company_id],
+            ['from_warehouse', $request->warehouse_id],
+        ])->delete();
+        TransferWarehouses::where([
+            ['company_id', $user->company_id],
+            ['to_warehouse', $request->warehouse_id],
+        ])->delete();
     }
     public function transferWarehouses(Request $request)
     {
