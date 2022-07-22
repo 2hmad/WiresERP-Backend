@@ -115,10 +115,10 @@ class BanksController extends Controller
                 return [
                     'id' => $item->id,
                     'process_type' => $item->type,
-                    'bank_name' => $item->bank->bank_name,
+                    'bank_name' => $item->bank ? $item->bank->bank_name : null,
                     'amount' => $item->amount,
                     'notes' => $item->notes,
-                    'admin' => $item->user->full_name
+                    'admin' => $item->user ? $item->user->full_name : null
                 ];
             });
             return $activities;
