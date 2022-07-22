@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankToSafe;
 use App\Models\Safes;
+use App\Models\SafeToBank;
 use App\Models\TransferSafes;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -83,8 +85,24 @@ class SafesController extends Controller
                 ['id', '=', $id]
             ])->first();
             if ($check !== null) {
-                return Safes::where([
+                Safes::where([
                     ['id', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                TransferSafes::where([
+                    ['from_safe', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                TransferSafes::where([
+                    ['to_safe', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                SafeToBank::where([
+                    ['from_safe', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                BankToSafe::where([
+                    ['to_safe', '=', $id],
                     ['company_id', '=', $user->company_id],
                 ])->delete();
             } else {

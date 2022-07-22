@@ -75,8 +75,28 @@ class BanksController extends Controller
                 ['id', '=', $id]
             ])->first();
             if ($bank !== null) {
-                return Banks::where([
+                Banks::where([
                     ['id', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                BankActivities::where([
+                    ['bank_id', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                BankToSafe::where([
+                    ['from_bank', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                SafeToBank::where([
+                    ['to_bank', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                BanksTransfer::where([
+                    ['from_bank', '=', $id],
+                    ['company_id', '=', $user->company_id],
+                ])->delete();
+                BanksTransfer::where([
+                    ['to_bank', '=', $id],
                     ['company_id', '=', $user->company_id],
                 ])->delete();
             } else {
@@ -98,7 +118,7 @@ class BanksController extends Controller
                     'bank_name' => $item->bank->bank_name,
                     'amount' => $item->amount,
                     'notes' => $item->notes,
-                    'admin' => $item->user->name
+                    'admin' => $item->user->full_name
                 ];
             });
             return $activities;
