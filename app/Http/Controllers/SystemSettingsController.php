@@ -57,8 +57,6 @@ class SystemSettingsController extends Controller
                         $destinationPath = public_path('/storage/companies/company-' . $user->company_id);
                         $image->move($destinationPath, $name);
                         $company->logo = $name;
-                    } else {
-                        $company->logo = $company->logo;
                     }
                     if ($request->hasFile('stamp')) {
                         $image = $request->file('stamp');
@@ -66,14 +64,13 @@ class SystemSettingsController extends Controller
                         $destinationPath = public_path('/storage/companies/company-' . $user->company_id);
                         $image->move($destinationPath, $name);
                         $company->company_stamp = $name;
-                    } else {
-                        $company->company_stamp = $request->stamp;
                     }
                     $company->name = $request->name;
                     $company->founder_name = $request->founder_name;
                     $company->business_field = $request->business_field;
                     $company->address = $request->address;
                     $company->phone = $request->phone;
+                    $company->updated_at = Carbon::now();
                     $company->save();
                 } else {
                     return response()->json(['alert_en' => 'Company not found', 'alert_ar' => 'الشركة غير موجودة'], 404);
