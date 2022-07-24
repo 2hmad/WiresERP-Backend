@@ -25,7 +25,7 @@ class CouponsController extends Controller
                 $client = Clients::where('id', $item->client_id)->first();
                 $item->item_name = $client->c_name;
                 $item->item_id = $client->id;
-            } else if ($item->section == 'category') {
+            } else if ($item->section == 'categories') {
                 $category = Category::where('id', $item->category_id)->first();
                 $item->item_name = $category->category_name;
                 $item->item_id = $category->id;
@@ -71,7 +71,7 @@ class CouponsController extends Controller
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
-            } else if ($request->section == 'items') {
+            } else if ($request->section == 'categories') {
                 $category = Category::where([
                     ['company_id', $user->company_id],
                     ['id', $request->item_id]
@@ -151,7 +151,7 @@ class CouponsController extends Controller
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
-            } else if ($request->section == 'items') {
+            } else if ($request->section == 'categories') {
                 $category = Category::where([
                     ['company_id', $user->company_id],
                     ['id', $request->category_id]
