@@ -121,10 +121,11 @@ class SystemSettingsController extends Controller
         $fiscal = Fiscals::where('company_id', $user->company_id)->first();
         if ($user->role == 'manager') {
             if ($fiscal !== null) {
-                $fiscal->fiscal_year = $request->fiscal_year;
-                $fiscal->start_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->start_date)->format('Y-m-d');
-                $fiscal->end_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->end_date)->format('Y-m-d');
-                $fiscal->save();
+                return $fiscal->start_date;
+                // $fiscal->fiscal_year = $request->fiscal_year;
+                // $fiscal->start_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->start_date)->format('Y-m-d');
+                // $fiscal->end_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->end_date)->format('Y-m-d');
+                // $fiscal->save();
             } else {
                 return response()->json(['alert_en' => 'Fiscals not found', 'alert_ar' => 'السنة المالية غير موجودة'], 404);
             }
