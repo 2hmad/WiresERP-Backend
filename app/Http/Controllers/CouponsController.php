@@ -15,7 +15,34 @@ class CouponsController extends Controller
     public function coupons(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        return Coupons::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
+        $coupon = Coupons::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
+        $coupon = $coupon->map(function ($item) {
+            // if ($item->section == 'products') {
+            //     $product = Products::where('id', $item->item_id)->first();
+            //     $item->item_name = $product->product_name;
+            //     $item->item_id = $product->id;
+            // } else if ($item->section == 'clients') {
+            //     $client = Clients::where('id', $item->item_id)->first();
+            //     $item->item_name = $client->c_name;
+            //     $item->item_id = $client->id;
+            // } else if ($item->section == 'category') {
+            //     $category = Category::where('id', $item->item_id)->first();
+            //     $item->item_name = $category->category_name;
+            //     $->item_id = $category->id;
+            // }
+            return [
+                "id" => $item->id,
+                "code" => $item->code,
+                "discount" => $item->amount,
+                "expire_date" => $item->expire_date,
+                "section" => $item->section,
+                'client_id' => $item->section == 'clients' ? $item->item_id : null,
+                'category_id' => $item->section == 'categories' ? $item->item_id : null,
+                "product_id" => $item->section == 'products' ? $item->item_id : null,
+                "item_name" => $item->item_name
+            ];
+        });
+        return $coupon;
     }
     public function addCoupon(Request $request)
     {
