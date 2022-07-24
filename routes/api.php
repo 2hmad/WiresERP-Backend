@@ -10,6 +10,7 @@ use App\Http\Controllers\DebtsController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SafesController;
+use App\Http\Controllers\SystemSettingsController;
 use App\Http\Controllers\WarehousesController;
 use App\Models\Countries;
 use Illuminate\Http\Request;
@@ -105,4 +106,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::delete('coupons/{id}', [CouponsController::class, 'deleteCoupon']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
+
+    Route::get('system-settings', [SystemSettingsController::class, 'settings']);
+    Route::post('main-settings', [SystemSettingsController::class, 'MainSettings']);
 });

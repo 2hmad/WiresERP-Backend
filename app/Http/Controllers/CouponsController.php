@@ -81,9 +81,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
@@ -120,9 +120,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
@@ -143,9 +143,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
@@ -166,9 +166,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
