@@ -109,4 +109,7 @@ Route::group(['middleware' => 'uToken'], function () {
 
     Route::get('system-settings', [SystemSettingsController::class, 'settings']);
     Route::post('main-settings', [SystemSettingsController::class, 'MainSettings']);
+    Route::post('extra-settings', [SystemSettingsController::class, 'ExtraSettings']);
+    Route::post('taxs-settings', [SystemSettingsController::class, 'TaxsSettings']);
+    Route::post('fiscal-settings', [SystemSettingsController::class, 'FiscalSettings']);
 });

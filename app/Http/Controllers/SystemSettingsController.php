@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicSettings;
 use App\Models\Companies;
+use App\Models\Fiscals;
 use App\Models\Users;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SystemSettingsController extends Controller
@@ -70,9 +72,61 @@ class SystemSettingsController extends Controller
                 } else {
                     return response()->json(['alert_en' => 'Company not found', 'alert_ar' => 'الشركة غير موجودة'], 404);
                 }
+            } else {
+                return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
             }
         } else {
             return response()->json(['alert_en' => 'Files not valid', 'alert_ar' => 'الملفات غير صالحة'], 404);
+        }
+    }
+    public function ExtraSettings(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $company = Companies::where('id', $user->company_id)->first();
+        if ($user->role == 'manager') {
+            if ($company !== null) {
+                $company->country = $request->country;
+                $company->currency = $request->currency;
+                $company->save();
+            } else {
+                return response()->json(['alert_en' => 'Company not found', 'alert_ar' => 'الشركة غير موجودة'], 404);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
+    public function TaxsSettings(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $company = Companies::where('id', $user->company_id)->first();
+        if ($user->role == 'manager') {
+            if ($company !== null) {
+                $company->tax_number = $request->tax_number;
+                $company->civil_registration_number = $request->civil_registration_number;
+                $company->tax_value_added = $request->tax_value_added;
+                $company->save();
+            } else {
+                return response()->json(['alert_en' => 'Company not found', 'alert_ar' => 'الشركة غير موجودة'], 404);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
+        }
+    }
+    public function FiscalSettings(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $fiscal = Fiscals::where('company_id', $user->company_id)->first();
+        if ($user->role == 'manager') {
+            if ($fiscal !== null) {
+                $fiscal->fiscal_year = $request->fiscal_year;
+                $fiscal->start_date = Carbon::parse($request->start_date)->format('Y-m-d');
+                $fiscal->end_date = Carbon::parse($request->end_date)->format('Y-m-d');
+                $fiscal->save();
+            } else {
+                return response()->json(['alert_en' => 'Fiscals not found', 'alert_ar' => 'السنة المالية غير موجودة'], 404);
+            }
+        } else {
+            return response()->json(['alert_en' => 'You are not authorized', 'alert_ar' => 'ليس لديك صلاحية'], 400);
         }
     }
 }

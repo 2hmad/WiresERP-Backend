@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('currency', 255);
             $table->string('tax_number', 255)->nullable();
             $table->string('civil_registration_number', 255)->nullable();
-            $table->text('tax_value_added')->nullable();
+            $table->unsignedFloat('tax_value_added')->nullable();
             $table->text('logo')->nullable();
             $table->text('company_stamp')->nullable();
             $table->string('status');
