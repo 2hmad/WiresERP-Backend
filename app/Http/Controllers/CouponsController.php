@@ -28,7 +28,7 @@ class CouponsController extends Controller
             if ($request->section == 'clients') {
                 $client = Clients::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->client_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($client == null) {
                     return response()->json(['alert_en' => 'Client not found', 'alert_ar' => 'عميل غير موجود'], 404);
@@ -39,9 +39,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
@@ -49,7 +49,7 @@ class CouponsController extends Controller
             } else if ($request->section == 'items') {
                 $category = Category::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->category_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($category == null) {
                     return response()->json(['alert_en' => 'Category not found', 'alert_ar' => 'فئة غير موجودة'], 404);
@@ -60,9 +60,9 @@ class CouponsController extends Controller
                         'amount' => $request->discount,
                         'expire_date' => Carbon::parse($request->expire_date)->format('Y-m-d'),
                         'section' => $request->section,
-                        'client_id' => $request->client_id,
-                        'category_id' => $request->category_id,
-                        "product_id" => $request->product_id,
+                        'client_id' => $request->section == 'clients' ? $request->item_id : null,
+                        'category_id' => $request->section == 'categories' ? $request->item_id : null,
+                        "product_id" => $request->section == 'products' ? $request->item_id : null,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
@@ -70,7 +70,7 @@ class CouponsController extends Controller
             } else if ($request->section == 'products') {
                 $product = Products::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->product_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($product == null) {
                     return response()->json(['alert_en' => 'Product not found', 'alert_ar' => 'منتج غير موجود'], 404);
