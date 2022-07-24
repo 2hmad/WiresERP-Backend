@@ -122,8 +122,8 @@ class SystemSettingsController extends Controller
         if ($user->role == 'manager') {
             if ($fiscal !== null) {
                 $fiscal->fiscal_year = $request->fiscal_year;
-                $fiscal->start_date = Carbon::parse($request->start_date)->format('Y-m-d');
-                $fiscal->end_date = Carbon::parse($request->end_date)->format('Y-m-d');
+                $fiscal->start_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->start_date)->format('Y-m-d');
+                $fiscal->end_date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $request->end_date)->format('Y-m-d');
                 $fiscal->save();
             } else {
                 return response()->json(['alert_en' => 'Fiscals not found', 'alert_ar' => 'السنة المالية غير موجودة'], 404);

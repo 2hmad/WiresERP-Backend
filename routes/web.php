@@ -15,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return now();
+    // Parse 2022-07-21T12:25:05.709419Z with Carbon and format it to a human readable date and disable the timezone
+    $date = Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2022-07-21T12:25:05.709419Z')->format('Y-m-d');
+    return $date;
 });
