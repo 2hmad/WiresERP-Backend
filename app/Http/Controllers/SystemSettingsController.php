@@ -43,8 +43,8 @@ class SystemSettingsController extends Controller
     public function MainSettings(Request $request)
     {
         $validated = $request->validate([
-            'logo' => 'string|nullable|mimes:jpeg,png,jpg,svg|max:2048',
-            'stamp' => 'string|nullable|mimes:jpeg,png,jpg,svg|max:2048',
+            'logo' => 'nullable|mimes:jpeg,png,jpg,svg|max:2048',
+            'stamp' => 'nullable|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
         if ($validated) {
             $user = Users::where('token', $request->header('Authorization'))->first();
