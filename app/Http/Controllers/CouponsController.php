@@ -131,7 +131,7 @@ class CouponsController extends Controller
             if ($request->section == 'clients') {
                 $client = Clients::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->client_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($client == null) {
                     return response()->json(['alert_en' => 'Client not found', 'alert_ar' => 'عميل غير موجود'], 404);
@@ -154,7 +154,7 @@ class CouponsController extends Controller
             } else if ($request->section == 'categories') {
                 $category = Category::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->category_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($category == null) {
                     return response()->json(['alert_en' => 'Category not found', 'alert_ar' => 'فئة غير موجودة'], 404);
@@ -177,7 +177,7 @@ class CouponsController extends Controller
             } else if ($request->section == 'products') {
                 $product = Products::where([
                     ['company_id', $user->company_id],
-                    ['id', $request->product_id]
+                    ['id', $request->item_id]
                 ])->first();
                 if ($product == null) {
                     return response()->json(['alert_en' => 'Product not found', 'alert_ar' => 'منتج غير موجود'], 404);
