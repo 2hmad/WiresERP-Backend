@@ -113,7 +113,8 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::delete('product-to-bill', [SaleBillController::class, 'deleteProductSaleBill']);
     Route::post('sale-bills-extra', [SaleBillController::class, 'addSaleBillExtra']);
     Route::post('record-payment', [SaleBillController::class, 'addRecordPayment']);
-    Route::post('return-invoice', [SaleBillController::class, 'returnInvoice']);
+    Route::get('return-invoice', [SaleBillController::class, 'returnInvoice']);
+    Route::post('return-invoice', [SaleBillController::class, 'addReturnInvoice']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 

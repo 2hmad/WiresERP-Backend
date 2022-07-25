@@ -6,6 +6,7 @@ use App\Models\Clients;
 use App\Models\Products;
 use App\Models\SaleBillElements;
 use App\Models\SaleBillExtra;
+use App\Models\SaleBillReturns;
 use App\Models\SaleBills;
 use App\Models\Users;
 use App\Models\Warehouses;
@@ -242,6 +243,69 @@ class SaleBillController extends Controller
                 ]);
             } else {
                 return response()->json(['alert_en' => 'Amount greater than final price', 'alert_ar' => 'المبلغ المستحق اكبر من السعر النهائي'], 400);
+            }
+        } else {
+            return response()->json(['alert_en' => 'Invoice not found', 'alert_ar' => 'الفاتورة غير موجودة'], 400);
+        }
+    }
+    public function returnInvoice(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $invoices = SaleBillReturns::where('company_id', $user->company_id)->get();
+        $invoices = $invoices->map(function ($item) {
+            return [
+                "id" => $item->id,
+                "bill_id" => $item->sale_bill_id,
+                "product_id" => $item->product_id,
+                "product_name" => Products::find($item->product_id) ? Products::find($item->product_id)->product_name : null,
+                "client_id" => $item->client_id,
+                "client_name" => Clients::find($item->client_id) ? Clients::find($item->client_id)->c_name : null,
+                "quantity" => $item->quantity,
+                "date_time" => $item->date_time,
+                "notes" => $item->notes,
+            ];
+        });
+        return $invoices;
+    }
+    public function addReturnInvoice(Request $request)
+    {
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $invoice = SaleBills::where([
+            ['company_id', $user->company_id],
+            ['id', $request->id]
+        ])->first();
+        if ($invoice !== null) {
+            $elements = SaleBillElements::where([
+                ['company_id', $user->company_id],
+                ['sale_bill_id', $invoice->id],
+                ['product_id', $request->product_id]
+            ])->first();
+            if ($elements !== null) {
+                if ($elements->quantity >= $request->quantity) {
+                    $elements->update([
+                        'quantity' => $elements->quantity - $request->quantity,
+                        "updated_at" => Carbon::now(),
+                    ]);
+                    $invoice->update([
+                        'status' => 'return',
+                        "updated_at" => Carbon::now(),
+                    ]);
+                    SaleBillReturns::create([
+                        'company_id' => $user->company_id,
+                        'sale_bill_id' => $invoice->id,
+                        'product_id' => $request->product_id,
+                        'client_id' => $invoice->client_id,
+                        'quantity' => $request->quantity,
+                        'date_time' => Carbon::parse($request->date_time)->format('Y-m-d H:i:s'),
+                        'notes' => $request->notes,
+                        "created_at" => Carbon::now(),
+                        "updated_at" => Carbon::now(),
+                    ]);
+                } else {
+                    return response()->json(['alert_en' => 'Quantity greater than quantity in invoice', 'alert_ar' => 'الكمية المستحقة اكبر من الكمية الموجودة في الفاتورة'], 400);
+                }
+            } else {
+                return response()->json(['alert_en' => 'Product not found in this invoice', 'alert_ar' => 'المنتج غير موجود في هذه الفاتورة'], 400);
             }
         } else {
             return response()->json(['alert_en' => 'Invoice not found', 'alert_ar' => 'الفاتورة غير موجودة'], 400);
