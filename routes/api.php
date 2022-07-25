@@ -107,6 +107,7 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::delete('coupons/{id}', [CouponsController::class, 'deleteCoupon']);
 
     Route::post('sale_bills', [SaleBillController::class, 'addSaleBill']);
+    Route::post('sale_bills_extra', [SaleBillController::class, 'addSaleBillExtra']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 
