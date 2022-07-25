@@ -30,4 +30,8 @@ class SaleBills extends Model
     {
         return $this->hasMany(SaleBillElements::class, 'sale_bill_id');
     }
+    public function extra()
+    {
+        return $this->hasMany(SaleBillExtra::class, 'sale_bill_id');
+    }
 }

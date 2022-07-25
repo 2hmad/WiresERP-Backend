@@ -14,6 +14,46 @@ use Illuminate\Http\Request;
 
 class SaleBillController extends Controller
 {
+    public function saleBill(Request $request)
+    {
+        // Get sale bills by company id with relationships 
+        $user = Users::where('token', $request->header('Authorization'))->first();
+        $saleBills = SaleBills::where('company_id', $user->company_id)->with('element', 'extra')->get();
+        $saleBills = $saleBills->map(function ($item) {
+            return [
+                "id" => $item->id,
+                "client_id" => $item->client_id,
+                "client_name" => Clients::find($item->client_id)->name,
+                "bill_number" => $item->bill_number,
+                "date_time" => $item->date_time,
+                "warehouse_id" => $item->warehouse_id,
+                "warehouse_name" => Warehouses::find($item->warehouse_id)->name,
+                "value_added_tax" => $item->value_added_tax,
+                "final_total" => $item->final_total,
+                "paid" => $item->paid,
+                "status" => $item->status,
+                "products" => $item->element->map(function ($item) {
+                    return [
+                        "id" => $item->id,
+                        "product_id" => $item->product_id,
+                        "product_name" => Products::find($item->product_id)->product_name,
+                        "product_price" => $item->price,
+                        "quantity" => $item->quantity,
+                        "unit" => $item->unit,
+                        "quantity_price" => $item->quantity_price,
+                    ];
+                }),
+                "extras" => $item->extra->map(function ($item) {
+                    return [
+                        "action" => $item->action,
+                        "action_type" => $item->action_type,
+                        "value" => $item->value,
+                    ];
+                }),
+            ];
+        });
+        return $saleBills;
+    }
     public function addSaleBill(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();

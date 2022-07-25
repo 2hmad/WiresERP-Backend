@@ -106,12 +106,14 @@ Route::group(['middleware' => 'uToken'], function () {
     Route::put('coupons', [CouponsController::class, 'editCoupon']);
     Route::delete('coupons/{id}', [CouponsController::class, 'deleteCoupon']);
 
+    Route::get('sale-bills', [SaleBillController::class, 'saleBill']);
     Route::post('sale-bills', [SaleBillController::class, 'addSaleBill']);
     Route::delete('sale-bills', [SaleBillController::class, 'deleteSaleBill']);
     Route::post('product-to-bill', [SaleBillController::class, 'addProductSaleBill']);
     Route::delete('product-to-bill', [SaleBillController::class, 'deleteProductSaleBill']);
     Route::post('sale-bills-extra', [SaleBillController::class, 'addSaleBillExtra']);
     Route::post('record-payment', [SaleBillController::class, 'addRecordPayment']);
+    Route::post('return-invoice', [SaleBillController::class, 'returnInvoice']);
 
     Route::get('permissions', [PermissionsController::class, 'permissions']);
 
