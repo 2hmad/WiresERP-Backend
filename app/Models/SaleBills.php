@@ -25,4 +25,9 @@ class SaleBills extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function element()
+    {
+        return $this->hasMany(SaleBillElements::class, 'sale_bill_id');
+    }
 }
