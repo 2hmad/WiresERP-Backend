@@ -42,6 +42,7 @@ class SaleBillController extends Controller
                         "quantity" => $item->quantity,
                         "unit" => $item->unit,
                         "quantity_price" => $item->quantity_price,
+                        "final_price" => $item->final_price,
                     ];
                 }),
                 "extras" => $item->extra->map(function ($item) {
@@ -93,6 +94,7 @@ class SaleBillController extends Controller
                     'quantity' => $request->quantity,
                     'unit' => $request->unit,
                     'quantity_price' => $request->quantity_price,
+                    'final_price' => $request->final_price,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
