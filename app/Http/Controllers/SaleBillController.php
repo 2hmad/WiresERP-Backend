@@ -143,6 +143,7 @@ class SaleBillController extends Controller
                     'quantity' => $request->quantity,
                     'unit' => $request->unit,
                     'quantity_price' => $request->quantity_price,
+                    'final_price' => $request->final_price,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
