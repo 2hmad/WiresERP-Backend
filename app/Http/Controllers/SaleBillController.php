@@ -96,7 +96,7 @@ class SaleBillController extends Controller
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
-                return $sale_bill->id;
+                return response()->json(['id' => $sale_bill->id], 200);
             }
         } else {
             return response()->json(['alert_en' => 'Client or Warehouse or Product not found', 'alert_ar' => 'العميل او المخزن او المنتج غير موجود'], 400);
