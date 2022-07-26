@@ -19,7 +19,7 @@ class SaleBillController extends Controller
     {
         // Get sale bills by company id with relationships 
         $user = Users::where('token', $request->header('Authorization'))->first();
-        $saleBills = SaleBills::where('company_id', $user->company_id)->with('element', 'extra')->get();
+        $saleBills = SaleBills::where('company_id', $user->company_id)->with('element', 'extra')->orderBy('id', 'DESC')->get();
         $saleBills = $saleBills->map(function ($item) {
             return [
                 "id" => $item->id,
