@@ -104,17 +104,17 @@ class SaleBillController extends Controller
             return response()->json(['alert_en' => 'Client or Warehouse or Product not found', 'alert_ar' => 'العميل او المخزن او المنتج غير موجود'], 400);
         }
     }
-    public function deleteSaleBill(Request $request)
+    public function deleteSaleBill(Request $request, $bill_id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         $sale_bill = SaleBills::where([
             ['company_id', $user->company_id],
-            ['id', $request->id]
+            ['id', $bill_id]
         ])->first();
         if ($sale_bill) {
             $sale_bill->delete();
-            SaleBillElements::where('sale_bill_id', $request->id)->delete();
-            SaleBillExtra::where('sale_bill_id', $request->id)->delete();
+            SaleBillElements::where('sale_bill_id', $bill_id)->delete();
+            SaleBillExtra::where('sale_bill_id', $bill_id)->delete();
         } else {
             return response()->json(['alert_en' => 'Sale Bill not found', 'alert_ar' => 'الفاتورة غير موجودة'], 400);
         }
@@ -156,21 +156,21 @@ class SaleBillController extends Controller
             return response()->json(['alert_en' => 'Product already added to this sale bill', 'alert_ar' => 'المنتج موجود بالفعل في هذه الفاتورة'], 400);
         }
     }
-    public function deleteProductSaleBill(Request $request)
+    public function deleteProductSaleBill(Request $request, $bill_id, $product_id)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
         $sale_bill = SaleBills::where([
             ['company_id', $user->company_id],
-            ['id', $request->sale_bill_id]
+            ['id', $bill_id]
         ])->first();
         $product = Products::where([
             ['company_id', $user->company_id],
-            ['id', $request->product_id]
+            ['id', $product_id]
         ])->first();
         $checkElement = SaleBillElements::where([
             ['company_id', $user->company_id],
-            ['sale_bill_id', $request->sale_bill_id],
-            ['product_id', $request->product_id]
+            ['sale_bill_id', $bill_id],
+            ['product_id', $product_id]
         ])->first();
         if ($checkElement !== null) {
             if ($sale_bill !== null && $product !== null) {
