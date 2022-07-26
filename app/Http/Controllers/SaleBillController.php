@@ -42,7 +42,7 @@ class SaleBillController extends Controller
                         "quantity" => $item->quantity,
                         "unit" => $item->unit,
                         "quantity_price" => $item->quantity_price,
-                        "final_price" => $item->final_price,
+                        "final_total" => $item->final_total,
                     ];
                 }),
                 "extras" => $item->extra->map(function ($item) {
@@ -94,7 +94,7 @@ class SaleBillController extends Controller
                     'quantity' => $request->quantity,
                     'unit' => $request->unit,
                     'quantity_price' => $request->quantity_price,
-                    'final_price' => $request->final_price,
+                    'final_total' => $request->final_total,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
@@ -145,7 +145,7 @@ class SaleBillController extends Controller
                     'quantity' => $request->quantity,
                     'unit' => $request->unit,
                     'quantity_price' => $request->quantity_price,
-                    'final_price' => $request->final_price,
+                    'final_total' => $request->final_total,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);

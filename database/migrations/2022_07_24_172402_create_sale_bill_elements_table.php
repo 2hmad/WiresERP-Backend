@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
             $table->text('unit');
             $table->unsignedInteger('quantity_price');
-            $table->unsignedInteger('final_price');
+            $table->unsignedInteger('final_total');
             $table->timestamps();
         });
     }
