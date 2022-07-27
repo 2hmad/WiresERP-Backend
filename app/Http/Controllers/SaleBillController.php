@@ -98,6 +98,9 @@ class SaleBillController extends Controller
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
+                // Decrease from product in stock
+                $product->warehouse_balance = $product->warehouse_balance - $request->quantity;
+                $product->save();
                 return response()->json(['id' => $sale_bill->id], 200);
             }
         } else {
@@ -113,6 +116,18 @@ class SaleBillController extends Controller
         ])->first();
         if ($sale_bill) {
             $sale_bill->delete();
+            $elements = SaleBillElements::where([
+                ['company_id', $user->company_id],
+                ['sale_bill_id', $bill_id]
+            ])->get();
+            foreach ($elements as $element) {
+                $product = Products::where([
+                    ['company_id', $user->company_id],
+                    ['id', $element->product_id]
+                ])->first();
+                $product->warehouse_balance = $product->warehouse_balance + $element->quantity;
+                $product->save();
+            }
             SaleBillElements::where('sale_bill_id', $bill_id)->delete();
             SaleBillExtra::where('sale_bill_id', $bill_id)->delete();
         } else {
@@ -149,6 +164,8 @@ class SaleBillController extends Controller
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ]);
+                $product->warehouse_balance = $product->warehouse_balance - $request->quantity;
+                $product->save();
             } else {
                 return response()->json(['alert_en' => 'Sale bill or Product not found', 'alert_ar' => 'الفاتورة او المنتج غير موجود'], 400);
             }
@@ -174,6 +191,8 @@ class SaleBillController extends Controller
         ])->first();
         if ($checkElement !== null) {
             if ($sale_bill !== null && $product !== null) {
+                $product->warehouse_balance = $product->warehouse_balance + $checkElement->quantity;
+                $product->save();
                 $checkElement->delete();
             } else {
                 return response()->json(['alert_en' => 'Sale bill or Product not found', 'alert_ar' => 'الفاتورة او المنتج غير موجود'], 400);
