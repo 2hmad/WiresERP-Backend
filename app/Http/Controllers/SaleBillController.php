@@ -300,7 +300,7 @@ class SaleBillController extends Controller
     public function returnInvoice(Request $request)
     {
         $user = Users::where('token', $request->header('Authorization'))->first();
-        $invoices = SaleBillReturns::where('company_id', $user->company_id)->get();
+        $invoices = SaleBillReturns::where('company_id', $user->company_id)->orderBy('id', 'DESC')->get();
         $invoices = $invoices->map(function ($item) {
             return [
                 "id" => $item->id,
