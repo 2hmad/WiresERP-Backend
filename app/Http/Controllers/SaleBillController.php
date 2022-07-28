@@ -276,9 +276,9 @@ class SaleBillController extends Controller
                     }
                 }
             }
-            if ($invoice->paid < $invoice->final_total + $shipping_amount && $request->value <= $invoice->final_total + $shipping_amount) {
+            if ($invoice->paid <= $invoice->final_total + $shipping_amount && $request->value <= $invoice->final_total + $shipping_amount) {
                 $invoice->update([
-                    'paid' => $invoice->paid + $request->value,
+                    'paid' => $request->value,
                     "updated_at" => Carbon::now(),
                 ]);
             } else {
