@@ -38,7 +38,7 @@ class SaleBillController extends Controller
                         "id" => $item->id,
                         "product_id" => $item->product_id,
                         "product_name" => Products::find($item->product_id)->product_name,
-                        "product_price" => $item->price,
+                        "product_price" => $item->product_price,
                         "quantity" => $item->quantity,
                         "unit" => $item->unit,
                         "quantity_price" => $item->quantity_price,
