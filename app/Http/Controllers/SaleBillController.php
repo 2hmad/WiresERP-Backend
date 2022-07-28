@@ -195,6 +195,8 @@ class SaleBillController extends Controller
             if ($sale_bill !== null && $product !== null) {
                 $product->warehouse_balance = $product->warehouse_balance + $checkElement->quantity;
                 $product->save();
+                $sale_bill->final_total = $sale_bill->final_total - $checkElement->final_total;
+                $sale_bill->save();
                 $checkElement->delete();
             } else {
                 return response()->json(['alert_en' => 'Sale bill or Product not found', 'alert_ar' => 'الفاتورة او المنتج غير موجود'], 400);
@@ -283,7 +285,7 @@ class SaleBillController extends Controller
                     }
                 }
             }
-            if ($invoice->paid <=> (($invoice->final_total + $shipping_amount) - $discount_amount) && $request->value <= (($invoice->final_total + $shipping_amount) - $discount_amount)) {
+            if ($request->value <= (($invoice->final_total + $shipping_amount) - $discount_amount)) {
                 $invoice->update([
                     'paid' => $request->value,
                     "updated_at" => Carbon::now(),
