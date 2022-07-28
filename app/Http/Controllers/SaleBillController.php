@@ -152,6 +152,8 @@ class SaleBillController extends Controller
         ])->first();
         if ($checkElement == null) {
             if ($sale_bill !== null && $product !== null) {
+                $sale_bill->final_total = $sale_bill->final_total + $request->final_total;
+                $sale_bill->save();
                 SaleBillElements::create([
                     'company_id' => $user->company_id,
                     'sale_bill_id' => $request->sale_bill_id,
@@ -259,7 +261,22 @@ class SaleBillController extends Controller
             ['id', $request->id]
         ])->first();
         if ($invoice !== null) {
-            if ($invoice->paid < $invoice->final_total && $request->value <= $invoice->final_total) {
+            // Check paid amoint is greater than invoice total or not with extra payment
+            $extra_bill = SaleBillExtra::where([
+                ['company_id', $user->company_id],
+                ['sale_bill_id', $invoice->id]
+            ])->get();
+            $shipping_amount = 0;
+            foreach ($extra_bill as $extra) {
+                if ($extra->action == 'shipping') {
+                    if ($extra->action_type == 'percentage') {
+                        $shipping_amount = $invoice->total * $extra->value / 100;
+                    } else {
+                        $shipping_amount = $extra->value;
+                    }
+                }
+            }
+            if ($invoice->paid < $invoice->final_total + $shipping_amount && $request->value <= $invoice->final_total + $shipping_amount) {
                 $invoice->update([
                     'paid' => $invoice->paid + $request->value,
                     "updated_at" => Carbon::now(),
