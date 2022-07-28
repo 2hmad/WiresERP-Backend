@@ -266,7 +266,7 @@ class SaleBillController extends Controller
                 ['sale_bill_id', $invoice->id]
             ])->get();
             $shipping_amount = 0;
-            $discount = 0;
+            $discount_amount = 0;
             foreach ($extra_bill as $extra) {
                 if ($extra->action == 'shipping') {
                     if ($extra->action_type == 'percentage') {
@@ -277,13 +277,13 @@ class SaleBillController extends Controller
                 }
                 if ($extra->action == 'total') {
                     if ($extra->action_type == 'percentage') {
-                        $discount = $invoice->total * $extra->value / 100;
+                        $discount_amount = $invoice->total * $extra->value / 100;
                     } else {
-                        $discount = $extra->value;
+                        $discount_amount = $extra->value;
                     }
                 }
             }
-            if ($invoice->paid <= (($invoice->final_total + $shipping_amount) - $discount)  && $request->value <= (($invoice->final_total + $shipping_amount) - $discount)) {
+            if ($invoice->paid <=> (($invoice->final_total + $shipping_amount) - $discount_amount) && $request->value <= (($invoice->final_total + $shipping_amount) - $discount_amount)) {
                 $invoice->update([
                     'paid' => $request->value,
                     "updated_at" => Carbon::now(),
