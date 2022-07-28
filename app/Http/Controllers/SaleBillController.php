@@ -24,11 +24,11 @@ class SaleBillController extends Controller
             return [
                 "id" => $item->id,
                 "client_id" => $item->client_id,
-                "client_name" => Clients::find($item->client_id)->name,
+                "client_name" => Clients::find($item->client_id)->c_name,
                 "bill_number" => $item->bill_number,
                 "date_time" => $item->date_time,
                 "warehouse_id" => $item->warehouse_id,
-                "warehouse_name" => Warehouses::find($item->warehouse_id)->name,
+                "warehouse_name" => Warehouses::find($item->warehouse_id)->warehouse_name,
                 "value_added_tax" => $item->value_added_tax,
                 "final_total" => $item->final_total,
                 "paid" => $item->paid,
