@@ -19,11 +19,11 @@ return new class extends Migration
             $table->unsignedInteger('warehouse_id');
             $table->unsignedBigInteger('barcode');
             $table->unsignedInteger('warehouse_balance');
-            $table->unsignedInteger('total_price');
+            $table->unsignedFloat('total_price');
             $table->text('product_name');
             $table->text('product_unit');
-            $table->unsignedInteger('wholesale_price');
-            $table->unsignedInteger('piece_price');
+            $table->unsignedFloat('wholesale_price');
+            $table->unsignedFloat('piece_price');
             $table->unsignedInteger('min_stock')->nullable();
             $table->text('product_model')->nullable();
             $table->unsignedInteger('category');

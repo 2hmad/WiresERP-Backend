@@ -21,8 +21,8 @@ return new class extends Migration
             $table->unsignedFloat('product_price');
             $table->unsignedInteger('quantity');
             $table->text('unit');
-            $table->unsignedInteger('quantity_price');
-            $table->unsignedInteger('final_total');
+            $table->unsignedFloat('quantity_price');
+            $table->unsignedFloat('final_total');
             $table->timestamps();
         });
     }

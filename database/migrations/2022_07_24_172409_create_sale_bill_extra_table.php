@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('sale_bill_id');
             $table->text('action');
             $table->text('action_type');
-            $table->unsignedInteger('value');
+            $table->unsignedFloat('value');
             $table->timestamps();
         });
     }

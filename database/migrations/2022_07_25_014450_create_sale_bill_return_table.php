@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sale_bill_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('client_id');
-            $table->unsignedInteger('quantity');
+            $table->unsignedFloat('quantity');
             $table->timestamp('date_time');
             $table->text('notes')->nullable();
             $table->timestamps();

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->timestamp('date_time');
             $table->unsignedInteger('warehouse_id');
             $table->unsignedInteger('value_added_tax')->comment("شامل الضريبة 1 ، غير شامل الضريبة 0");
-            $table->unsignedInteger('final_total');
-            $table->unsignedInteger('paid');
+            $table->unsignedFloat('final_total');
+            $table->unsignedFloat('paid');
             $table->text('status');
             $table->timestamps();
         });
